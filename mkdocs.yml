@@ -3,10 +3,18 @@ theme:
   name: material
   palette:
     scheme: slate
+markdown_extensions:
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
 nav:
   - Inicio: index.md
   - 1. Qué es LINQ: que-es-linq.md
   - 2. Arquitectura de 4 Capas: arquitectura.md
   - 3. Funciones de Agregado: agregados.md
-  - 4. Funciones CRUD: crud.md
-  - 5. Casos de Estudio: casos.md
+  - 4. Cruce de Tablas (Join): cruce-tablas.md
+  - 5. Operaciones CRUD: crud.md
+  - 6. Paginación: paginacion.md
+  - 7. Casos de Estudio: casos.md

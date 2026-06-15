@@ -1,0 +1,276 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Enfermedad">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre" Type="nvarchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="Genero">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Paciente_Enfermedad">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_Paciente" Type="int" />
+          <Property Name="id_Enfermedad" Type="int" />
+          <Property Name="fechaEnfermedad" Type="date" />
+          <Property Name="observacion" Type="nvarchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="Pacientes">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Id_Genero" Type="int" />
+          <Property Name="apellido" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="nombres" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="cedula" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="telefono" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="fechaNacimiento" Type="date" Nullable="false" />
+          <Property Name="direccion" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CodigoIESS" Type="nvarchar" MaxLength="50" />
+          <Property Name="Afiliado" Type="bit" />
+        </EntityType>
+        <Association Name="FK_Paciente_Enfermedad_Enfermedad">
+          <End Role="Enfermedad" Type="Self.Enfermedad" Multiplicity="0..1" />
+          <End Role="Paciente_Enfermedad" Type="Self.Paciente_Enfermedad" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Enfermedad">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Paciente_Enfermedad">
+              <PropertyRef Name="id_Enfermedad" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Paciente_Enfermedad_Pacientes">
+          <End Role="Pacientes" Type="Self.Pacientes" Multiplicity="0..1" />
+          <End Role="Paciente_Enfermedad" Type="Self.Paciente_Enfermedad" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Pacientes">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Paciente_Enfermedad">
+              <PropertyRef Name="id_Paciente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Pacientes_Genero">
+          <End Role="Genero" Type="Self.Genero" Multiplicity="0..1" />
+          <End Role="Pacientes" Type="Self.Pacientes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Genero">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Pacientes">
+              <PropertyRef Name="Id_Genero" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ModelStoreContainer">
+          <EntitySet Name="Enfermedad" EntityType="Self.Enfermedad" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Genero" EntityType="Self.Genero" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Paciente_Enfermedad" EntityType="Self.Paciente_Enfermedad" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Pacientes" EntityType="Self.Pacientes" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Paciente_Enfermedad_Enfermedad" Association="Self.FK_Paciente_Enfermedad_Enfermedad">
+            <End Role="Enfermedad" EntitySet="Enfermedad" />
+            <End Role="Paciente_Enfermedad" EntitySet="Paciente_Enfermedad" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Paciente_Enfermedad_Pacientes" Association="Self.FK_Paciente_Enfermedad_Pacientes">
+            <End Role="Pacientes" EntitySet="Pacientes" />
+            <End Role="Paciente_Enfermedad" EntitySet="Paciente_Enfermedad" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Pacientes_Genero" Association="Self.FK_Pacientes_Genero">
+            <End Role="Genero" EntitySet="Genero" />
+            <End Role="Pacientes" EntitySet="Pacientes" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Genero">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Pacientes" Relationship="Self.FK_Pacientes_Genero" FromRole="Genero" ToRole="Pacientes" />
+        </EntityType>
+        <EntityType Name="Pacientes">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Id_Genero" Type="Int32" />
+          <Property Name="apellido" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="nombres" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="cedula" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="telefono" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="fechaNacimiento" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="direccion" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CodigoIESS" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Afiliado" Type="Boolean" />
+          <NavigationProperty Name="Genero" Relationship="Self.FK_Pacientes_Genero" FromRole="Pacientes" ToRole="Genero" />
+          <NavigationProperty Name="Paciente_Enfermedad" Relationship="Model.FK_Paciente_Enfermedad_Pacientes" FromRole="Pacientes" ToRole="Paciente_Enfermedad" />
+        </EntityType>
+        <Association Name="FK_Pacientes_Genero">
+          <End Role="Genero" Type="Self.Genero" Multiplicity="0..1" />
+          <End Role="Pacientes" Type="Self.Pacientes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Genero">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Pacientes">
+              <PropertyRef Name="Id_Genero" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Programacion_avanzadaEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Genero" EntityType="Self.Genero" />
+          <EntitySet Name="Pacientes" EntityType="Self.Pacientes" />
+          <AssociationSet Name="FK_Pacientes_Genero" Association="Self.FK_Pacientes_Genero">
+            <End Role="Genero" EntitySet="Genero" />
+            <End Role="Pacientes" EntitySet="Pacientes" />
+          </AssociationSet>
+          <EntitySet Name="Enfermedad" EntityType="Model.Enfermedad" />
+          <EntitySet Name="Paciente_Enfermedad" EntityType="Model.Paciente_Enfermedad" />
+          <AssociationSet Name="FK_Paciente_Enfermedad_Enfermedad" Association="Model.FK_Paciente_Enfermedad_Enfermedad">
+            <End Role="Enfermedad" EntitySet="Enfermedad" />
+            <End Role="Paciente_Enfermedad" EntitySet="Paciente_Enfermedad" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Paciente_Enfermedad_Pacientes" Association="Model.FK_Paciente_Enfermedad_Pacientes">
+            <End Role="Pacientes" EntitySet="Pacientes" />
+            <End Role="Paciente_Enfermedad" EntitySet="Paciente_Enfermedad" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Enfermedad">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Paciente_Enfermedad" Relationship="Model.FK_Paciente_Enfermedad_Enfermedad" FromRole="Enfermedad" ToRole="Paciente_Enfermedad" />
+        </EntityType>
+        <EntityType Name="Paciente_Enfermedad">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_Paciente" Type="Int32" />
+          <Property Name="id_Enfermedad" Type="Int32" />
+          <Property Name="fechaEnfermedad" Type="DateTime" Precision="0" />
+          <Property Name="observacion" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Enfermedad" Relationship="Model.FK_Paciente_Enfermedad_Enfermedad" FromRole="Paciente_Enfermedad" ToRole="Enfermedad" />
+          <NavigationProperty Name="Pacientes" Relationship="Model.FK_Paciente_Enfermedad_Pacientes" FromRole="Paciente_Enfermedad" ToRole="Pacientes" />
+        </EntityType>
+        <Association Name="FK_Paciente_Enfermedad_Enfermedad">
+          <End Type="Model.Enfermedad" Role="Enfermedad" Multiplicity="0..1" />
+          <End Type="Model.Paciente_Enfermedad" Role="Paciente_Enfermedad" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Enfermedad">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Paciente_Enfermedad">
+              <PropertyRef Name="id_Enfermedad" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Paciente_Enfermedad_Pacientes">
+          <End Type="Model.Pacientes" Role="Pacientes" Multiplicity="0..1" />
+          <End Type="Model.Paciente_Enfermedad" Role="Paciente_Enfermedad" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Pacientes">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Paciente_Enfermedad">
+              <PropertyRef Name="id_Paciente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="Programacion_avanzadaEntities">
+          <EntitySetMapping Name="Genero">
+            <EntityTypeMapping TypeName="Model.Genero">
+              <MappingFragment StoreEntitySet="Genero">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Pacientes">
+            <EntityTypeMapping TypeName="Model.Pacientes">
+              <MappingFragment StoreEntitySet="Pacientes">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Id_Genero" ColumnName="Id_Genero" />
+                <ScalarProperty Name="apellido" ColumnName="apellido" />
+                <ScalarProperty Name="nombres" ColumnName="nombres" />
+                <ScalarProperty Name="cedula" ColumnName="cedula" />
+                <ScalarProperty Name="telefono" ColumnName="telefono" />
+                <ScalarProperty Name="fechaNacimiento" ColumnName="fechaNacimiento" />
+                <ScalarProperty Name="direccion" ColumnName="direccion" />
+                <ScalarProperty Name="CodigoIESS" ColumnName="CodigoIESS" />
+                <ScalarProperty Name="Afiliado" ColumnName="Afiliado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Enfermedad">
+            <EntityTypeMapping TypeName="Model.Enfermedad">
+              <MappingFragment StoreEntitySet="Enfermedad">
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Paciente_Enfermedad">
+            <EntityTypeMapping TypeName="Model.Paciente_Enfermedad">
+              <MappingFragment StoreEntitySet="Paciente_Enfermedad">
+                <ScalarProperty Name="observacion" ColumnName="observacion" />
+                <ScalarProperty Name="fechaEnfermedad" ColumnName="fechaEnfermedad" />
+                <ScalarProperty Name="id_Enfermedad" ColumnName="id_Enfermedad" />
+                <ScalarProperty Name="id_Paciente" ColumnName="id_Paciente" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

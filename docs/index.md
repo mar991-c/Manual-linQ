@@ -2,7 +2,7 @@
 
 
 
-Este repositorio documenta el uso de LINQ to Entities bajo una arquitectura de 4 capas 
+Este repositorio documenta el uso de LINQ to Entities bajo una arquitectura de 4 capas
 
 (Entidades, Datos, Negocio, Presentación).
 

@@ -1,0 +1,8 @@
+<Solution>
+  <Project Path="GestionUsuariosDatos/GestionUsuariosDatos.csproj" Id="e14ddd0f-c1dc-46d4-a082-8802600b780d" />
+  <Project Path="GestionUsuariosDatosEF/GestionUsuariosDatosEF.csproj" Id="582d2973-b8cc-478a-bc71-abc939aaf88d" />
+  <Project Path="GestionUsuariosEntidades/GestionUsuariosEntidades.csproj" Id="0b484a34-0845-402a-a51d-95e36ba94dc9" />
+  <Project Path="GestionUsuariosLogicaNegocio/GestionUsuariosLogicaNegocio.csproj" Id="520969e5-cc50-4e88-a418-f957d5b40de3" />
+  <Project Path="GestionUsuariosPresentacion/GestionUsuariosPresentacion.csproj" Id="f87a3dbb-ceeb-4ed8-8264-0d124b87092e" />
+  <Project Path="GestionUsuarios_DatosLinq/GestionUsuarios_DatosLinq.csproj" Id="01ad8463-26f7-4999-bfc0-bea81f4c7be7" />
+</Solution>

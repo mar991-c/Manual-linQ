@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="Programacion avanzada" Class="Programacion_avanzadaDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=.\sqlexpress;Initial Catalog=&quot;Programacion avanzada&quot;;Integrated Security=True;Trust Server Certificate=True" SettingsObjectName="GestionUsuarios_DatosLinq.Properties.Settings" SettingsPropertyName="Programacion_avanzadaConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.Genero" Member="Genero">
+    <Type Name="Genero">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Nombre" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Association Name="Genero_Pacientes" Member="Pacientes" ThisKey="Id" OtherKey="Id_Genero" Type="Pacientes" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Pacientes" Member="Pacientes">
+    <Type Name="Pacientes">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Id_Genero" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="apellido" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="nombres" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="cedula" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="telefono" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="fechaNacimiento" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="direccion" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="CodigoIESS" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Afiliado" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Association Name="Genero_Pacientes" Member="Genero" ThisKey="Id_Genero" OtherKey="Id" Type="Genero" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.vw_CuentaGenero" Member="vw_CuentaGenero">
+    <Type Name="vw_CuentaGenero">
+      <Column Name="Nombre" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Expr1" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
+</Database>
