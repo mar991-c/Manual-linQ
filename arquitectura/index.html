@@ -799,20 +799,19 @@
 <hr />
 <h2 id="3-flujo-de-comunicacion-y-dependencias">3. Flujo de Comunicación y Dependencias</h2>
 <p>Profesionalmente, las capas no pueden hablar entre sí de forma caótica. Existe una regla de oro inquebrantable de unidireccionalidad para evitar dependencias circulares:</p>
-<p>```mermaid
-graph TD
+<pre class="mermaid"><code>graph TD
     A[Capa de Presentación] --&gt;|Solo conoce a| B[Capa de Negocio]
     B --&gt;|Solo conoce a| C[Capa de Datos]
-    D((Capa de Entidades))</p>
-<pre><code>A -.-&gt;|Usa Modelos de| D
-B -.-&gt;|Usa Modelos de| D
-C -.-&gt;|Llena Modelos de| D
+    D((Capa de Entidades))
 
-style A fill:#e1f5fe,stroke:#0288d1,stroke-width:2px,color:#000000
-style B fill:#fff3e0,stroke:#f57c00,stroke-width:2px,color:#000000
-style C fill:#e8f5e9,stroke:#388e3c,stroke-width:2px,color:#000000
-style D fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px,stroke-dasharray: 5 5,color:#000000
-</code></pre>
+    A -.-&gt;|Usa Modelos de| D
+    B -.-&gt;|Usa Modelos de| D
+    C -.-&gt;|Llena Modelos de| D
+
+    style A fill:#e1f5fe,stroke:#0288d1,stroke-width:2px,color:#000000
+    style B fill:#fff3e0,stroke:#f57c00,stroke-width:2px,color:#000000
+    style C fill:#e8f5e9,stroke:#388e3c,stroke-width:2px,color:#000000
+    style D fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px,stroke-dasharray: 5 5,color:#000000</code></pre>
 <h2 id="4-ventajas-y-desventajas-del-modelo">4. Ventajas y Desventajas del Modelo</h2>
 <table>
 <thead>

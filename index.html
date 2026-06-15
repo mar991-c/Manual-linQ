@@ -69,6 +69,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#bienvenidos-al-manual-avanzado-de-linq" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -203,6 +208,26 @@
       <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
       
       
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inicio
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
       
       <a href="." class="md-nav__link md-nav__link--active">
         
@@ -220,6 +245,36 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#matriz-de-trazabilidad-implementacion-de-linq" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Matriz de Trazabilidad: Implementación de LINQ
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -458,6 +513,27 @@
   
   
   
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#matriz-de-trazabilidad-implementacion-de-linq" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Matriz de Trazabilidad: Implementación de LINQ
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -474,26 +550,76 @@
 
 
 
-  <h1>Inicio</h1>
-
-<p># Bienvenidos al Manual Avanzado de LINQ</p>
-<p>Este repositorio documenta el uso de LINQ to Entities bajo una arquitectura de 4 capas</p>
-<p>(Entidades, Datos, Negocio, Presentación).</p>
+<h1 id="bienvenidos-al-manual-avanzado-de-linq">Bienvenidos al Manual Avanzado de LINQ</h1>
+<p>Este repositorio documenta el uso de LINQ to Entities bajo una arquitectura de 4 capas
+(Entidades, Datos, Negocio, Presentación).</p>
 <p>Aquí encontrarás:</p>
-<p>* Fundamentos de LINQ y su ejecución diferida</p>
-<p>* Funciones de agregado (Sum, Count, Average, etc.)</p>
-<p>* Operaciones CRUD</p>
-<p>* Casos de estudio aplicados</p>
-<p>## Matriz de Trazabilidad: Implementación de LINQ</p>
-<p>A continuación, se detalla exactamente en qué proyectos y archivos físicos se han implementado las diferentes técnicas de LINQ requeridas para este manual:</p>
-<p>| Técnica LINQ Aplicada | Proyecto Académico | Capa / Archivo Exacto |</p>
-<p>| :--- | :--- | :--- |</p>
-<p>| **GroupBy + Count** (Agregados) | <code>Northwind</code> | <code>Northwind\_Logica/CantidadCategoria\_Logica.cs</code> |</p>
-<p>| **GroupBy + Sum + Take** (Top 10) | <code>Northwind</code> | <code>Datos\_LinQ/ClienteGastos\_Datos.cs</code> |</p>
-<p>| **Join** (Sintaxis de Consulta) | <code>Northwind</code> | <code>Northwind\_Logica</code> (Método de Catálogo) |</p>
-<p>| **CRUD con Entity Framework** (<code>.Include</code>) | <code>GestionUsuarios</code> | <code>GestionUsuariosDatosEF/PacienteDatos.cs</code> |</p>
-<p>| **CRUD con LINQ to SQL** | <code>GestionUsuarios</code> | <code>GestionUsuarios\_DatosLinq/PacienteDatos.cs</code> |</p>
-<p>| **Paginación** (<code>Skip</code> y <code>Take</code>) | <code>Northwind</code> | <code>Northwind\_Logica</code> (Paginación de Clientes) |</p>
+<ul>
+<li>Fundamentos de LINQ y su ejecución diferida</li>
+<li>Funciones de agregado (Sum, Count, Average, etc.)</li>
+<li>Operaciones CRUD</li>
+<li>Casos de estudio aplicados</li>
+<li>Proyectos de ejemplo completos con código real</li>
+</ul>
+<hr />
+<h2 id="matriz-de-trazabilidad-implementacion-de-linq">Matriz de Trazabilidad: Implementación de LINQ</h2>
+<p>A continuación se detalla exactamente en qué proyectos y archivos físicos se han implementado las diferentes técnicas de LINQ documentadas en este manual:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Técnica LINQ Aplicada</th>
+<th style="text-align: left;">Proyecto Académico</th>
+<th style="text-align: left;">Capa / Archivo Exacto</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>GroupBy + Count</strong> (Agregados)</td>
+<td style="text-align: left;"><code>Northwind</code></td>
+<td style="text-align: left;"><code>Northwind_Logica/CantidadCategoria_Logica.cs</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>GroupBy + Sum + Take</strong> (Top 10)</td>
+<td style="text-align: left;"><code>Northwind</code></td>
+<td style="text-align: left;"><code>Datos_LinQ/ClienteGastos_Datos.cs</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Join</strong> (Sintaxis de Consulta)</td>
+<td style="text-align: left;"><code>Northwind</code></td>
+<td style="text-align: left;"><code>Northwind_Logica</code> (Método de Catálogo)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>CRUD con Entity Framework</strong> (<code>.Include</code>)</td>
+<td style="text-align: left;"><code>GestionUsuarios</code></td>
+<td style="text-align: left;"><code>GestionUsuariosDatosEF/PacienteDatos.cs</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>CRUD con LINQ to SQL</strong></td>
+<td style="text-align: left;"><code>GestionUsuarios</code></td>
+<td style="text-align: left;"><code>GestionUsuarios_DatosLinq/PacienteDatos.cs</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Paginación</strong> (<code>Skip</code> y <code>Take</code>)</td>
+<td style="text-align: left;"><code>Northwind</code></td>
+<td style="text-align: left;"><code>Northwind_Logica</code> (Paginación de Clientes)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Where + OrderBy + Select</strong></td>
+<td style="text-align: left;"><code>BibliotecaApp</code></td>
+<td style="text-align: left;"><code>Biblioteca.Datos/LibroDatos.cs</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>GroupBy + Sum + Average + Min</strong></td>
+<td style="text-align: left;"><code>InventarioApp</code></td>
+<td style="text-align: left;"><code>Inventario.Datos/ProductoDatos.cs</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Reglas de negocio con LINQ to Objects</strong></td>
+<td style="text-align: left;"><code>InventarioApp</code></td>
+<td style="text-align: left;"><code>Inventario.Negocio/ProductoNegocio.cs</code></td>
+</tr>
+</tbody>
+</table>
 
 
 

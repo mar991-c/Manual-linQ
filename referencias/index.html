@@ -69,6 +69,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#formato-de-referencias-y-trazabilidad" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -419,6 +424,26 @@
       <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
       
       
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. Referencias y Formato
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
       
       <a href="./" class="md-nav__link md-nav__link--active">
         
@@ -436,6 +461,47 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-referenciacion-de-codigo-fuente-interno" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Referenciación de Código Fuente Interno
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-referenciacion-bibliografica-externa-formato-ieee" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Referenciación Bibliográfica Externa (Formato IEEE)
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -458,6 +524,38 @@
   
   
   
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-referenciacion-de-codigo-fuente-interno" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Referenciación de Código Fuente Interno
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-referenciacion-bibliografica-externa-formato-ieee" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Referenciación Bibliográfica Externa (Formato IEEE)
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -474,28 +572,32 @@
 
 
 
-  <h1>8. Referencias y Formato</h1>
-
-<p># Formato de Referencias y Trazabilidad</p>
+<h1 id="formato-de-referencias-y-trazabilidad">Formato de Referencias y Trazabilidad</h1>
 <p>Para garantizar el rigor académico y la trazabilidad técnica de este manual, se ha establecido un sistema de doble referenciación. Este modelo permite identificar claramente qué código pertenece a los desarrollos internos de la asignatura y qué conceptos teóricos provienen de la documentación oficial.</p>
-<p>## 1. Referenciación de Código Fuente Interno</p>
-<p>Dado que el objetivo de este manual es documentar la implementación de LINQ orientada al manejo de capas, **todo el código mostrado en los ejemplos no es genérico**, sino que ha sido extraído directamente de los proyectos desarrollados en clase.</p>
+<hr />
+<h2 id="1-referenciacion-de-codigo-fuente-interno">1. Referenciación de Código Fuente Interno</h2>
+<p>Dado que el objetivo de este manual es documentar la implementación de LINQ orientada al manejo de capas, <strong>todo el código mostrado en los ejemplos no es genérico</strong>, sino que ha sido extraído directamente de los proyectos desarrollados en clase.</p>
 <p>Para referenciar el código fuente, se utiliza un bloque de cita (<code>&gt;</code>) justo antes del fragmento de código, siguiendo esta estructura estándar:</p>
 <blockquote>
-<p>**Referencia:** Proyecto <code>\[Nombre del Proyecto]</code>, archivo <code>\[Nombre de la Carpeta o Capa]/\[Nombre del Archivo.cs]</code>.</p>
+<p><strong>Referencia:</strong> Proyecto <code>[Nombre del Proyecto]</code>, archivo <code>[Nombre de la Carpeta o Capa]/[Nombre del Archivo.cs]</code>.</p>
 </blockquote>
-<p>**Ejemplo de aplicación:**</p>
+<p><strong>Ejemplo de aplicación:</strong></p>
 <blockquote>
-<p>**Referencia:** Proyecto <code>GestionUsuarios</code>, archivo <code>GestionUsuariosDatosEF/PacienteDatos.cs</code>.</p>
+<p><strong>Referencia:</strong> Proyecto <code>GestionUsuarios</code>, archivo <code>GestionUsuariosDatosEF/PacienteDatos.cs</code>.</p>
 </blockquote>
 <p>Esta trazabilidad demuestra exactamente en qué capa (Entidades, Datos, Negocio o Presentación) se está ejecutando la instrucción LINQ.</p>
-<p>## 2. Referenciación Bibliográfica Externa (Formato IEEE)</p>
-<p>Para la teoría, los conceptos arquitectónicos y la definición de las funciones de LINQ, se ha consultado la documentación técnica oficial (principalmente *Microsoft Learn*). </p>
-<p>Estas fuentes se listan al final de cada capítulo correspondiente utilizando el estándar internacional **IEEE (Institute of Electrical and Electronics Engineers)** para documentos web.</p>
-<p>**Estructura del estándar aplicado:**</p>
-<p>* [Número] Autor, "Título del artículo o sección," *Nombre del Sitio Web*. [Online]. Disponible en: [URL]. [Accedido: Fecha-de-acceso].</p>
-<p>**Ejemplo de aplicación:**</p>
-<p>* [1] Microsoft, "LINQ to SQL," *Microsoft Learn*. [Online]. Disponible en: [https://learn.microsoft.com/es-es/dotnet/framework/data/adonet/sql/linq/](https://learn.microsoft.com/es-es/dotnet/framework/data/adonet/sql/linq/). [Accedido: 15-jun-2026].</p>
+<hr />
+<h2 id="2-referenciacion-bibliografica-externa-formato-ieee">2. Referenciación Bibliográfica Externa (Formato IEEE)</h2>
+<p>Para la teoría, los conceptos arquitectónicos y la definición de las funciones de LINQ, se ha consultado la documentación técnica oficial (principalmente <em>Microsoft Learn</em>).</p>
+<p>Estas fuentes se listan al final de cada capítulo correspondiente utilizando el estándar internacional <strong>IEEE (Institute of Electrical and Electronics Engineers)</strong> para documentos web.</p>
+<p><strong>Estructura del estándar aplicado:</strong></p>
+<ul>
+<li>[Número] Autor, "Título del artículo o sección," <em>Nombre del Sitio Web</em>. [Online]. Disponible en: [URL]. [Accedido: Fecha-de-acceso].</li>
+</ul>
+<p><strong>Ejemplo de aplicación:</strong></p>
+<ul>
+<li>[1] Microsoft, "LINQ to SQL," <em>Microsoft Learn</em>. [Online]. Disponible en: <a href="https://learn.microsoft.com/es-es/dotnet/framework/data/adonet/sql/linq/">https://learn.microsoft.com/es-es/dotnet/framework/data/adonet/sql/linq/</a>. [Accedido: 15-jun-2026].</li>
+</ul>
 
 
 
