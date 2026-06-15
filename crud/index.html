@@ -1,0 +1,874 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../cruce-tablas/">
+      
+      
+        <link rel="next" href="../paginacion/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>5. Operaciones CRUD - Manual Avanzado de LINQ y Arquitectura</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#capitulo-5-operaciones-crud-con-capas-estaticas" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Manual Avanzado de LINQ y Arquitectura" class="md-header__button md-logo" aria-label="Manual Avanzado de LINQ y Arquitectura" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Manual Avanzado de LINQ y Arquitectura
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              5. Operaciones CRUD
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Manual Avanzado de LINQ y Arquitectura" class="md-nav__button md-logo" aria-label="Manual Avanzado de LINQ y Arquitectura" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Manual Avanzado de LINQ y Arquitectura
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inicio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../que-es-linq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Qué es LINQ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../arquitectura/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. Arquitectura de 4 Capas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agregados/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. Funciones de Agregado
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cruce-tablas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. Cruce de Tablas (Join)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. Operaciones CRUD
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. Operaciones CRUD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-que-es-el-crud-y-la-logica-del-change-tracking" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. ¿Qué es el CRUD y la Lógica del Change Tracking?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-el-estandar-profesional-clases-estaticas-static" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. El Estándar Profesional: Clases Estáticas (Static)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-implementacion-del-crud-tabla-customers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Implementación del CRUD (Tabla Customers)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Implementación del CRUD (Tabla Customers)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-create-insertar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1. Create (Insertar)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-read-leer-por-id" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2. Read (Leer por ID)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-update-actualizar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3. Update (Actualizar)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34-delete-eliminar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4. Delete (Eliminar)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-ventajas-y-desventajas-del-crud-con-ef-core" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Ventajas y Desventajas del CRUD con EF Core
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-referencias-formato-ieee" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Referencias (Formato IEEE)
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../paginacion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. Paginación
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../casos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. Casos de Estudio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-que-es-el-crud-y-la-logica-del-change-tracking" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. ¿Qué es el CRUD y la Lógica del Change Tracking?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-el-estandar-profesional-clases-estaticas-static" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. El Estándar Profesional: Clases Estáticas (Static)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-implementacion-del-crud-tabla-customers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Implementación del CRUD (Tabla Customers)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Implementación del CRUD (Tabla Customers)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-create-insertar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1. Create (Insertar)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-read-leer-por-id" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2. Read (Leer por ID)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-update-actualizar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3. Update (Actualizar)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34-delete-eliminar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4. Delete (Eliminar)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-ventajas-y-desventajas-del-crud-con-ef-core" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Ventajas y Desventajas del CRUD con EF Core
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-referencias-formato-ieee" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Referencias (Formato IEEE)
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="capitulo-5-operaciones-crud-con-capas-estaticas">Capítulo 5: Operaciones CRUD con Capas Estáticas</h1>
+<h2 id="1-que-es-el-crud-y-la-logica-del-change-tracking">1. ¿Qué es el CRUD y la Lógica del Change Tracking?</h2>
+<p>El acrónimo <strong>CRUD</strong> representa las cuatro operaciones fundamentales de persistencia de datos: <strong>C</strong>reate (Insertar), <strong>R</strong>ead (Leer), <strong>U</strong>pdate (Actualizar) y <strong>D</strong>elete (Eliminar).</p>
+<p>En lugar de escribir comandos SQL manuales (que son propensos a inyecciones SQL y errores de sintaxis), utilizamos <strong>Entity Framework Core (EF Core)</strong>. </p>
+<p><strong>¿Por qué se hace de esta manera?</strong></p>
+<p>EF Core utiliza un patrón llamado <strong>Change Tracking</strong> (Rastreo de Cambios). Cuando obtienes un cliente de la base de datos usando LINQ, EF Core guarda ese objeto en la memoria RAM y "lo vigila". Si cambias el nombre del cliente en C# y ejecutas <code>.SaveChanges()</code>, EF Core detecta la modificación y genera automáticamente el comando <code>UPDATE</code> exacto para la base de datos.</p>
+<hr />
+<h2 id="2-el-estandar-profesional-clases-estaticas-static">2. El Estándar Profesional: Clases Estáticas (Static)</h2>
+<p>Para este manual, implementaremos el CRUD utilizando clases <code>static</code> en nuestras capas de Datos y Negocio.</p>
+<p><strong>¿Cuándo y por qué se utiliza?</strong></p>
+<p>En sistemas donde las transacciones son directas y no requieren mantener datos persistentes en la memoria del usuario entre clics (operaciones <em>stateless</em>), instanciar la clase de acceso a datos con <code>new CapaDatos()</code> una y otra vez consume recursos innecesarios y sobrecarga el Recolector de Basura (Garbage Collector) del servidor. </p>
+<p>Al declarar la clase y sus métodos como estáticos (<code>static</code>), las funciones se cargan en la memoria de la aplicación una sola vez cuando el sistema arranca. Esto acelera drásticamente los tiempos de respuesta.</p>
+<hr />
+<h2 id="3-implementacion-del-crud-tabla-customers">3. Implementación del CRUD (Tabla Customers)</h2>
+<p>La tabla <code>Customers</code> de Northwind utiliza un <code>string</code> de 5 caracteres como Llave Primaria (<code>CustomerID</code>), a diferencia de los clásicos enteros autonuméricos.</p>
+<h3 id="31-create-insertar">3.1. Create (Insertar)</h3>
+<p>Para insertar, creamos el objeto, lo añadimos al contexto con <code>.Add()</code> y guardamos los cambios. La clase estática maneja su propio ciclo de vida de conexión usando el bloque <code>using</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="k">public</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">ClienteDatos</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">InsertarCliente</span><span class="p">(</span><span class="n">Customer</span><span class="w"> </span><span class="n">nuevoCliente</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// El &#39;using&#39; asegura que la conexión a la BD se cierre y destruya al terminar</span>
+<span class="w">        </span><span class="k">using</span><span class="w"> </span><span class="p">(</span><span class="kt">var</span><span class="w"> </span><span class="n">_context</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">NorthwindContext</span><span class="p">())</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="n">_context</span><span class="p">.</span><span class="n">Customers</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="n">nuevoCliente</span><span class="p">);</span>
+<span class="w">            </span><span class="n">_context</span><span class="p">.</span><span class="n">SaveChanges</span><span class="p">();</span><span class="w"> </span><span class="c1">// Aquí se ejecuta el INSERT en SQL Server</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="32-read-leer-por-id">3.2. Read (Leer por ID)</h3>
+<p>Para buscar un registro específico, utilizamos el método LINQ <code>.FirstOrDefault()</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="k">public</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="n">Customer</span><span class="w"> </span><span class="nf">ObtenerClientePorId</span><span class="p">(</span><span class="kt">string</span><span class="w"> </span><span class="n">idCliente</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="p">(</span><span class="kt">var</span><span class="w"> </span><span class="n">_context</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">NorthwindContext</span><span class="p">())</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Retorna el cliente si el ID coincide, o null si no existe</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">_context</span><span class="p">.</span><span class="n">Customers</span><span class="p">.</span><span class="n">FirstOrDefault</span><span class="p">(</span><span class="n">c</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">c</span><span class="p">.</span><span class="n">CustomerID</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">idCliente</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="33-update-actualizar">3.3. Update (Actualizar)</h3>
+<p>Aprovechamos el rastreo de EF Core. Modificamos el objeto y le indicamos al contexto que su estado ha cambiado a "Modificado" usando <code>.Update()</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="k">public</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">ActualizarCliente</span><span class="p">(</span><span class="n">Customer</span><span class="w"> </span><span class="n">clienteModificado</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="p">(</span><span class="kt">var</span><span class="w"> </span><span class="n">_context</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">NorthwindContext</span><span class="p">())</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">_context</span><span class="p">.</span><span class="n">Customers</span><span class="p">.</span><span class="n">Update</span><span class="p">(</span><span class="n">clienteModificado</span><span class="p">);</span>
+<span class="w">        </span><span class="n">_context</span><span class="p">.</span><span class="n">SaveChanges</span><span class="p">();</span><span class="w"> </span><span class="c1">// Aquí se ejecuta el UPDATE en SQL Server</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="34-delete-eliminar">3.4. Delete (Eliminar)</h3>
+<p>La lógica estricta de eliminación exige primero consultar si el registro existe en la base de datos. Si existe, se procede a removerlo.</p>
+<div class="highlight"><pre><span></span><code><span class="k">public</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">EliminarCliente</span><span class="p">(</span><span class="kt">string</span><span class="w"> </span><span class="n">idCliente</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="p">(</span><span class="kt">var</span><span class="w"> </span><span class="n">_context</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">NorthwindContext</span><span class="p">())</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// 1. Buscamos el cliente</span>
+<span class="w">        </span><span class="kt">var</span><span class="w"> </span><span class="n">cliente</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_context</span><span class="p">.</span><span class="n">Customers</span><span class="p">.</span><span class="n">FirstOrDefault</span><span class="p">(</span><span class="n">c</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">c</span><span class="p">.</span><span class="n">CustomerID</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">idCliente</span><span class="p">);</span>
+<span class="w">        </span><span class="c1">// 2. Validamos que exista</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">cliente</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="k">null</span><span class="p">)</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="n">_context</span><span class="p">.</span><span class="n">Customers</span><span class="p">.</span><span class="n">Remove</span><span class="p">(</span><span class="n">cliente</span><span class="p">);</span><span class="w"> </span><span class="c1">// 3. Lo marcamos para eliminación</span>
+<span class="w">            </span><span class="n">_context</span><span class="p">.</span><span class="n">SaveChanges</span><span class="p">();</span><span class="w">             </span><span class="c1">// 4. Se ejecuta el DELETE en SQL Server</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<hr />
+<h2 id="4-ventajas-y-desventajas-del-crud-con-ef-core">4. Ventajas y Desventajas del CRUD con EF Core</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Aspecto</th>
+<th style="text-align: left;">Evaluación Técnica</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Ventajas</strong></td>
+<td style="text-align: left;"><strong>Prevención de Errores:</strong> Visual Studio revisa el código en tiempo de compilación. Si intentas asignar un texto a un campo numérico, el programa no compilará.<br><strong>Mantenibilidad:</strong> Evitas tener cadenas de texto SQL gigantes (Strings mágicos) regadas por todo el código, facilitando la lectura y las pruebas.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Desventajas</strong></td>
+<td style="text-align: left;"><strong>Operaciones Masivas (Bulk):</strong> El <em>Change Tracking</em> es excelente para 1 o 100 registros. Pero si necesitas actualizar 100,000 clientes al mismo tiempo, el seguimiento colapsará la memoria RAM. Para esos casos, se prefiere usar sentencias SQL directas (Raw SQL) o librerías externas como <em>EF Core Bulk Extensions</em>.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="5-referencias-formato-ieee">5. Referencias (Formato IEEE)</h2>
+<ul>
+<li>
+<p>[1] Microsoft, "Guardado de datos en Entity Framework Core," <em>Microsoft Learn</em>. [Online]. Disponible en: <a href="https://learn.microsoft.com/es-es/ef/core/saving/">https://learn.microsoft.com/es-es/ef/core/saving/</a>. [Accedido: 15-jun-2026].</p>
+</li>
+<li>
+<p>[2] Microsoft, "Seguimiento de cambios en EF Core," <em>Microsoft Learn</em>. [Online]. Disponible en: <a href="https://learn.microsoft.com/es-es/ef/core/change-tracking/">https://learn.microsoft.com/es-es/ef/core/change-tracking/</a>. [Accedido: 15-jun-2026].</p>
+</li>
+<li>
+<p>[3] Microsoft, "Clases estáticas y sus miembros (Guía de programación de C#)," <em>Microsoft Learn</em>. [Online]. Disponible en: <a href="https://learn.microsoft.com/es-es/dotnet/csharp/programming-guide/classes-and-structs/static-classes-and-static-class-members">https://learn.microsoft.com/es-es/dotnet/csharp/programming-guide/classes-and-structs/static-classes-and-static-class-members</a>. [Accedido: 15-jun-2026].</p>
+</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": [], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

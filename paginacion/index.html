@@ -1,0 +1,767 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../crud/">
+      
+      
+        <link rel="next" href="../casos/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>6. Paginación - Manual Avanzado de LINQ y Arquitectura</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#capitulo-6-paginacion-y-rendimiento-skip-y-take" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Manual Avanzado de LINQ y Arquitectura" class="md-header__button md-logo" aria-label="Manual Avanzado de LINQ y Arquitectura" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Manual Avanzado de LINQ y Arquitectura
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              6. Paginación
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Manual Avanzado de LINQ y Arquitectura" class="md-nav__button md-logo" aria-label="Manual Avanzado de LINQ y Arquitectura" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Manual Avanzado de LINQ y Arquitectura
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inicio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../que-es-linq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Qué es LINQ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../arquitectura/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. Arquitectura de 4 Capas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agregados/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. Funciones de Agregado
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cruce-tablas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. Cruce de Tablas (Join)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../crud/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. Operaciones CRUD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. Paginación
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. Paginación
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-la-logica-de-la-paginacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. La Lógica de la Paginación
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-implementacion-con-skip-y-take" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Implementación con Skip y Take
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Implementación con Skip y Take">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#la-formula-matematica" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        La Fórmula Matemática
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ejemplo-practico-paginando-clientes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ejemplo Práctico: Paginando Clientes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-ventajas-y-desventajas-de-skip-y-take" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Ventajas y Desventajas de Skip y Take
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-referencias-formato-ieee" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Referencias (Formato IEEE)
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../casos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. Casos de Estudio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-la-logica-de-la-paginacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. La Lógica de la Paginación
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-implementacion-con-skip-y-take" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Implementación con Skip y Take
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Implementación con Skip y Take">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#la-formula-matematica" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        La Fórmula Matemática
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ejemplo-practico-paginando-clientes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ejemplo Práctico: Paginando Clientes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-ventajas-y-desventajas-de-skip-y-take" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Ventajas y Desventajas de Skip y Take
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-referencias-formato-ieee" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Referencias (Formato IEEE)
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="capitulo-6-paginacion-y-rendimiento-skip-y-take">Capítulo 6: Paginación y Rendimiento (Skip y Take)</h1>
+<h2 id="1-la-logica-de-la-paginacion">1. La Lógica de la Paginación</h2>
+<p>En sistemas de nivel empresarial, cargar todos los registros de una tabla simultáneamente es una de las principales causas de caídas de servidores (Timeouts y OutOfMemoryExceptions). </p>
+<p>Para evitar esto, implementamos la <strong>Paginación del Lado del Servidor (Server-side Pagination)</strong>. En lugar de extraer 100,000 clientes, extraemos únicamente el bloque de 20 clientes que el usuario está viendo en su pantalla en este preciso momento.</p>
+<ul>
+<li><strong>¿Por qué se hace así?</strong> Porque delegamos el trabajo pesado al motor de la base de datos. SQL Server es extremadamente rápido procesando índices y saltando registros, lo que mantiene nuestra Capa de Negocio ligera y veloz.</li>
+</ul>
+<hr />
+<h2 id="2-implementacion-con-skip-y-take">2. Implementación con Skip y Take</h2>
+<p>En LINQ, la paginación se logra combinando dos métodos: <code>.Skip()</code> (saltar) y <code>.Take()</code> (tomar). </p>
+<p>Es <strong>obligatorio</strong> usar un método de ordenamiento (como <code>.OrderBy()</code>) antes de paginar, ya que las bases de datos relacionales no garantizan un orden predeterminado a menos que se les indique explícitamente.</p>
+<h3 id="la-formula-matematica">La Fórmula Matemática</h3>
+<p>Para calcular cuántos registros debemos saltar dinámicamente según la página solicitada, el estándar de la industria utiliza esta fórmula:</p>
+<p><code>Saltar = (NumeroDePagina - 1) * TamañoDePagina</code></p>
+<h3 id="ejemplo-practico-paginando-clientes">Ejemplo Práctico: Paginando Clientes</h3>
+<p>Supongamos que el gerente quiere ver la lista de Clientes, ordenados alfabéticamente, pero mostrando solo 10 por página.</p>
+<div class="highlight"><pre><span></span><code><span class="k">public</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="n">List</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span><span class="w"> </span><span class="n">ObtenerClientesPaginados</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">numeroPagina</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">tamañoPagina</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="p">(</span><span class="kt">var</span><span class="w"> </span><span class="n">_context</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">NorthwindContext</span><span class="p">())</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Aplicamos la fórmula</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">registrosASaltar</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">numeroPagina</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">tamañoPagina</span><span class="p">;</span>
+<span class="w">        </span><span class="kt">var</span><span class="w"> </span><span class="n">paginaClientes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_context</span><span class="p">.</span><span class="n">Customers</span>
+<span class="w">            </span><span class="p">.</span><span class="n">OrderBy</span><span class="p">(</span><span class="n">c</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">c</span><span class="p">.</span><span class="n">CompanyName</span><span class="p">)</span><span class="w">      </span><span class="c1">// 1. Siempre ordenar primero</span>
+<span class="w">            </span><span class="p">.</span><span class="n">Skip</span><span class="p">(</span><span class="n">registrosASaltar</span><span class="p">)</span><span class="w">           </span><span class="c1">// 2. Omitir los registros de las páginas anteriores</span>
+<span class="w">            </span><span class="p">.</span><span class="n">Take</span><span class="p">(</span><span class="n">tamañoPagina</span><span class="p">)</span><span class="w">               </span><span class="c1">// 3. Tomar estrictamente la cantidad solicitada</span>
+<span class="w">            </span><span class="p">.</span><span class="n">ToList</span><span class="p">();</span><span class="w">                        </span><span class="c1">// 4. Ejecutar consulta en SQL</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">paginaClientes</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>Si el usuario pide la Página 3 con un tamaño de 10: La fórmula calcula (3 - 1) * 10 = 20. LINQ le dirá a SQL Server que salte los primeros 20 registros y nos devuelva los siguientes 10.</p>
+<h2 id="3-ventajas-y-desventajas-de-skip-y-take">3. Ventajas y Desventajas de Skip y Take</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Aspecto</th>
+<th style="text-align: left;">Evaluación Técnica</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Ventajas</strong></td>
+<td style="text-align: left;"><strong>Rendimiento Extremo:</strong> El tiempo de respuesta de la base de datos se vuelve constante (O(1) en términos prácticos de red) sin importar si la tabla tiene 100 o 10 millones de registros.<br><strong>Ahorro de Ancho de Banda:</strong> Reduce drásticamente los megabytes de información que viajan entre la base de datos, el servidor y el navegador del cliente.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Desventajas</strong></td>
+<td style="text-align: left;"><strong>Degradación en Páginas Profundas (Deep Paging):</strong> Si el usuario intenta acceder a la página 50,000, el motor de base de datos de igual forma tiene que "leer y saltar" todos esos registros bajo el capó, lo que requiere estrategias de indexación más avanzadas (como <em>Keyset Pagination</em>).</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="4-referencias-formato-ieee">4. Referencias (Formato IEEE)</h2>
+<ul>
+<li>
+<p>[1] Microsoft, "Creación de particiones de datos (C#) - Skip y Take," <em>Microsoft Learn</em>. [Online]. Disponible en: <a href="https://learn.microsoft.com/es-es/dotnet/csharp/linq/partition-data">https://learn.microsoft.com/es-es/dotnet/csharp/linq/partition-data</a>. [Accedido: 15-jun-2026].</p>
+</li>
+<li>
+<p>[2] Microsoft, "Paginación - Entity Framework Core," <em>Microsoft Learn</em>. [Online]. Disponible en: <a href="https://learn.microsoft.com/es-es/ef/core/querying/pagination">https://learn.microsoft.com/es-es/ef/core/querying/pagination</a>. [Accedido: 15-jun-2026].</p>
+</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": [], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,871 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../que-es-linq/">
+      
+      
+        <link rel="next" href="../agregados/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>2. Arquitectura de 4 Capas - Manual Avanzado de LINQ y Arquitectura</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#capitulo-2-arquitectura-de-4-capas" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Manual Avanzado de LINQ y Arquitectura" class="md-header__button md-logo" aria-label="Manual Avanzado de LINQ y Arquitectura" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Manual Avanzado de LINQ y Arquitectura
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              2. Arquitectura de 4 Capas
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Manual Avanzado de LINQ y Arquitectura" class="md-nav__button md-logo" aria-label="Manual Avanzado de LINQ y Arquitectura" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Manual Avanzado de LINQ y Arquitectura
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inicio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../que-es-linq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Qué es LINQ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. Arquitectura de 4 Capas
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. Arquitectura de 4 Capas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-que-es-el-modelo-de-4-capas-y-por-que-se-utiliza" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. ¿Qué es el modelo de 4 Capas y por qué se utiliza?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-responsabilidades-de-cada-capa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Responsabilidades de Cada Capa
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Responsabilidades de Cada Capa">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-capa-de-entidades-transversal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Capa de Entidades (Transversal)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-capa-de-datos-dal-data-access-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Capa de Datos (DAL - Data Access Layer)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-capa-de-negocio-bll-business-logic-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Capa de Negocio (BLL - Business Logic Layer)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-capa-de-presentacion-ui-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Capa de Presentación (UI / API)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-flujo-de-comunicacion-y-dependencias" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Flujo de Comunicación y Dependencias
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-ventajas-y-desventajas-del-modelo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Ventajas y Desventajas del Modelo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-referencias-formato-ieee" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Referencias (Formato IEEE)
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agregados/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. Funciones de Agregado
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cruce-tablas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. Cruce de Tablas (Join)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../crud/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. Operaciones CRUD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../paginacion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. Paginación
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../casos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. Casos de Estudio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-que-es-el-modelo-de-4-capas-y-por-que-se-utiliza" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. ¿Qué es el modelo de 4 Capas y por qué se utiliza?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-responsabilidades-de-cada-capa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Responsabilidades de Cada Capa
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Responsabilidades de Cada Capa">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-capa-de-entidades-transversal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Capa de Entidades (Transversal)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-capa-de-datos-dal-data-access-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Capa de Datos (DAL - Data Access Layer)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-capa-de-negocio-bll-business-logic-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Capa de Negocio (BLL - Business Logic Layer)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-capa-de-presentacion-ui-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Capa de Presentación (UI / API)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-flujo-de-comunicacion-y-dependencias" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Flujo de Comunicación y Dependencias
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-ventajas-y-desventajas-del-modelo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Ventajas y Desventajas del Modelo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-referencias-formato-ieee" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Referencias (Formato IEEE)
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="capitulo-2-arquitectura-de-4-capas">Capítulo 2: Arquitectura de 4 Capas</h1>
+<h2 id="1-que-es-el-modelo-de-4-capas-y-por-que-se-utiliza">1. ¿Qué es el modelo de 4 Capas y por qué se utiliza?</h2>
+<p>En el desarrollo de software profesional, no se escribe todo el código (diseño visual, validaciones y conexiones a base de datos) en un solo lugar. El modelo de <strong>4 Capas (Arquitectura N-Tier)</strong> es un patrón de diseño que divide el sistema en proyectos físicos independientes. </p>
+<p><strong>La Lógica y el Porqué:</strong></p>
+<p>El objetivo principal es el <strong>Desacoplamiento</strong> y la <strong>Separación de Responsabilidades (Separation of Concerns)</strong>. </p>
+<ul>
+<li>
+<p>¿Por qué se hace de esta manera y no de otra? Si un desarrollador mezcla el código SQL en el botón de un formulario web, y mañana la empresa decide lanzar una aplicación móvil, ese código no sirve porque está "atrapado" en la web. </p>
+</li>
+<li>
+<p>Al separar el sistema en capas, la lógica y los datos se escriben una sola vez y pueden ser consumidos por cualquier interfaz (Web, Móvil, Consola).</p>
+</li>
+</ul>
+<hr />
+<h2 id="2-responsabilidades-de-cada-capa">2. Responsabilidades de Cada Capa</h2>
+<p>Cada proyecto tiene un rol estrictamente definido y limitaciones claras sobre con quién puede comunicarse.</p>
+<h3 id="1-capa-de-entidades-transversal">1. Capa de Entidades (Transversal)</h3>
+<p>Es el núcleo de los datos. Esta capa es una biblioteca de clases simple: no tiene lógica, no tiene conexiones, solo tiene la estructura.</p>
+<ul>
+<li>
+<p><strong>Responsable de:</strong> Modelos, Clases (ej. <code>Cliente.cs</code>, <code>Factura.cs</code>) y Objetos de transferencia (DTOs).</p>
+</li>
+<li>
+<p><strong>Interacción con LINQ:</strong> Ninguna. Solo provee los moldes que LINQ va a llenar con datos.</p>
+</li>
+</ul>
+<h3 id="2-capa-de-datos-dal-data-access-layer">2. Capa de Datos (DAL - Data Access Layer)</h3>
+<p>Es la única capa que tiene permitido saber qué es una base de datos, qué es SQL y cuál es la cadena de conexión.</p>
+<ul>
+<li>
+<p><strong>Responsable de:</strong> Consultas directas a la base de datos, Operaciones CRUD, mapeo relacional mediante Entity Framework / LINQ to SQL.</p>
+</li>
+<li>
+<p><strong>Interacción con LINQ:</strong> Aquí vive <strong>LINQ to Entities / LINQ to SQL</strong>. Se encarga de traducir las consultas C# a comandos SQL optimizados. Retorna los datos crudos a la capa superior.</p>
+</li>
+</ul>
+<h3 id="3-capa-de-negocio-bll-business-logic-layer">3. Capa de Negocio (BLL - Business Logic Layer)</h3>
+<p>Es el "cerebro" de la aplicación.</p>
+<ul>
+<li>
+<p><strong>Responsable de:</strong> Reglas de negocio (ej. "No permitir el registro si es menor de edad"), validaciones complejas y procesamiento matemático de información.</p>
+</li>
+<li>
+<p><strong>Interacción con LINQ:</strong> Aquí vive <strong>LINQ to Objects</strong>. Recibe listas de la Capa de Datos y usa funciones de agregado (<code>Sum</code>, <code>Count</code>) y agrupaciones (<code>GroupBy</code>) en memoria para preparar reportes antes de mandarlos a la pantalla.</p>
+</li>
+</ul>
+<h3 id="4-capa-de-presentacion-ui-api">4. Capa de Presentación (UI / API)</h3>
+<p>Es la "cara" del sistema. Es la única capa que el usuario final ve y toca.</p>
+<ul>
+<li>
+<p><strong>Responsable de:</strong> Formularios, Interfaces gráficas, Menús, Interacción directa con el usuario (clics, inputs).</p>
+</li>
+<li>
+<p><strong>Interacción con LINQ:</strong> <strong>Estrictamente nula.</strong> Esta capa no hace consultas, solo pide información a la Capa de Negocio y la dibuja en pantalla.</p>
+</li>
+</ul>
+<hr />
+<h2 id="3-flujo-de-comunicacion-y-dependencias">3. Flujo de Comunicación y Dependencias</h2>
+<p>Profesionalmente, las capas no pueden hablar entre sí de forma caótica. Existe una regla de oro inquebrantable de unidireccionalidad para evitar dependencias circulares:</p>
+<pre class="mermaid"><code>graph TD
+    A[Capa de Presentación] --&gt;|Solo conoce a| B[Capa de Negocio]
+    B --&gt;|Solo conoce a| C[Capa de Datos]
+    D((Capa de Entidades))
+    A -.-&gt;|Usa Modelos de| D
+    B -.-&gt;|Usa Modelos de| D
+    C -.-&gt;|Llena Modelos de| D
+    style A fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
+    style B fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+    style C fill:#e8f5e9,stroke:#388e3c,stroke-width:2px
+    style D fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px,stroke-dasharray: 5 5</code></pre>
+<h2 id="4-ventajas-y-desventajas-del-modelo">4. Ventajas y Desventajas del Modelo</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Aspecto</th>
+<th style="text-align: left;">Evaluación Técnica</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Ventajas</strong></td>
+<td style="text-align: left;"><strong>Mantenibilidad:</strong> Si se cambia la base de datos, solo se reescribe la Capa de Datos.<br><strong>Seguridad:</strong> La interfaz no tiene acceso al motor de la base de datos, impidiendo borrados accidentales.<br><strong>Trabajo en Equipo:</strong> Permite desarrollo simultáneo en diferentes capas sin generar conflictos.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Desventajas</strong></td>
+<td style="text-align: left;"><strong>Sobrecarga Inicial:</strong> Requiere crear más archivos, carpetas e interfaces al inicio del proyecto.<br><strong>Redundancia:</strong> A menudo requiere mapear los objetos de la base de datos a objetos de presentación (DTOs).</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="5-referencias-formato-ieee">5. Referencias (Formato IEEE)</h2>
+<ul>
+<li>
+<p>[1] Microsoft, "Estilo de arquitectura de n niveles," <em>Azure Architecture Center</em>. [Online]. Disponible en: <a href="https://learn.microsoft.com/es-es/azure/architecture/guide/architecture-styles/n-tier">https://learn.microsoft.com/es-es/azure/architecture/guide/architecture-styles/n-tier</a>. [Accedido: 15-jun-2026].</p>
+</li>
+<li>
+<p>[2] Microsoft, "Diseño de la capa de persistencia de la infraestructura," <em>Microsoft Learn</em>. [Online]. Disponible en: <a href="https://learn.microsoft.com/es-es/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/infrastructure-persistence-layer-design">https://learn.microsoft.com/es-es/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/infrastructure-persistence-layer-design</a>. [Accedido: 15-jun-2026].</p>
+</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": [], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
