@@ -70,6 +70,7 @@ graph TD
     style B fill:#fff3e0,stroke:#f57c00,stroke-width:2px,color:#000000
     style C fill:#e8f5e9,stroke:#388e3c,stroke-width:2px,color:#000000
     style D fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px,stroke-dasharray: 5 5,color:#000000
+```
 
 ## 4. Ventajas y Desventajas del Modelo
 

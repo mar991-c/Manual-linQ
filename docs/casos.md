@@ -2,9 +2,9 @@
 
 ## 1. ¿Por qué Casos de Estudio?
 
-Los capítulos anteriores explican cada técnica de LINQ de forma aislada. En la práctica profesional, sin embargo, una misma operación (por ejemplo, "leer un paciente por su ID") puede implementarse de **varias maneras distintas** dependiendo de la tecnología de acceso a datos elegida.
+Los capítulos anteriores explican cada técnica de LINQ de forma aislada. En la práctica profesional, sin embargo, una misma operación puede implementarse de **varias maneras distintas** dependiendo de la tecnología y el contexto del sistema.
 
-Esta sección compara tres proyectos académicos reales que resuelven el **mismo problema** (un sistema de gestión de pacientes, capa por capa), pero usando tres enfoques diferentes de acceso a datos. El objetivo es que el lector entienda **cuándo y por qué** se elige cada uno.
+Esta sección presenta cuatro casos reales que muestran LINQ aplicado en distintos escenarios: comparación de tecnologías de acceso a datos, agregados sobre grandes volúmenes, y sistemas sencillos completos con las 4 capas.
 
 ---
 
@@ -211,9 +211,7 @@ public static class ClienteGastos_Datos
 }
 ```
 
-**Análisis técnico:**
-
-Esta consulta combina **cuatro técnicas** vistas en capítulos anteriores en una sola instrucción:
+**Análisis técnico:** Esta consulta combina **cuatro técnicas** vistas en capítulos anteriores en una sola instrucción:
 
 * `GroupBy` con una llave compuesta (`new { v.CompanyName, v.Country }`) — agrupa por dos columnas a la vez (Capítulo 3).
 * `Sum()` y `Count()` — funciones de agregado dentro del `Select` (Capítulo 3).
@@ -232,14 +230,222 @@ public static class ClienteGasto_Logica
 }
 ```
 
-Nótese que la Capa de Negocio aquí actúa como un "intermediario transparente": no añade lógica adicional porque, en este caso, la consulta ya viene completamente resuelta desde la Capa de Datos. Esto respeta la regla de la Capa de Presentación: nunca debe llamar directamente a `Datos_LinQ`, sino siempre a través de `Northwind_Logica`.
+Nótese que la Capa de Negocio aquí actúa como un "intermediario transparente": no añade lógica adicional porque la consulta ya viene completamente resuelta desde la Capa de Datos. Esto respeta la regla de la Capa de Presentación: nunca debe llamar directamente a `Datos_LinQ`, sino siempre a través de `Northwind_Logica`.
 
 ---
 
-## 4. Referencias (Formato IEEE)
+## 4. Caso de Estudio 3: Sistema de Biblioteca
+
+**Contexto:** Una institución educativa gestiona su colección de libros: registrar títulos, consultar disponibilidad, buscar por género y obtener estadísticas de la colección. Este caso ilustra cómo las mismas instrucciones LINQ operan de forma diferente según la capa — en la Capa de Datos generan SQL, en la Capa de Negocio operan en memoria.
+
+> **Referencia:** Proyecto `BibliotecaApp`, archivo `Biblioteca.Entidades/LibroEntidad.cs`.
+
+```csharp
+public class LibroEntidad
+{
+    public int ID { get; set; }
+    public string Titulo { get; set; }
+    public string Autor { get; set; }
+    public string Genero { get; set; }
+    public int AnioPub { get; set; }
+    public bool Disponible { get; set; }
+}
+```
+
+### 4.1. Capa de Datos — LINQ to Entities
+
+`Where` y `OrderBy` se ejecutan en SQL Server, no en RAM. El `Select` proyecta solo los campos necesarios, reduciendo el tráfico de datos.
+
+> **Referencia:** Proyecto `BibliotecaApp`, archivo `Biblioteca.Datos/LibroDatos.cs`, método `ObtenerLibrosDisponibles`.
+
+```csharp
+public static List<LibroEntidad> ObtenerLibrosDisponibles()
+{
+    using (var contexto = new BibliotecaContext())
+    {
+        return contexto.Libros
+            .Where(l => l.Disponible == true)   // Se traduce a: WHERE Disponible = 1
+            .OrderBy(l => l.Titulo)             // Se traduce a: ORDER BY Titulo
+            .Select(l => new LibroEntidad
+            {
+                ID        = l.ID,
+                Titulo    = l.Titulo,
+                Autor     = l.Autor,
+                Genero    = l.Genero,
+                AnioPub   = l.AnioPub,
+                Disponible = l.Disponible
+            })
+            .ToList();                          // Aquí se ejecuta el SQL
+    }
+}
+```
+
+El DELETE sigue el patrón estándar: buscar con `FirstOrDefault`, verificar que existe, luego eliminar.
+
+> **Referencia:** Proyecto `BibliotecaApp`, archivo `Biblioteca.Datos/LibroDatos.cs`, método `EliminarLibro`.
+
+```csharp
+public static bool EliminarLibro(int id)
+{
+    using (var contexto = new BibliotecaContext())
+    {
+        var libro = contexto.Libros.FirstOrDefault(l => l.ID == id);
+        if (libro == null) return false;
+
+        contexto.Libros.Remove(libro);
+        contexto.SaveChanges();
+        return true;
+    }
+}
+```
+
+### 4.2. Capa de Negocio — LINQ to Objects
+
+Una vez que los datos llegan como `List<LibroEntidad>`, los filtros adicionales se aplican **en memoria**, sin volver a consultar la base de datos.
+
+> **Referencia:** Proyecto `BibliotecaApp`, archivo `Biblioteca.Negocio/LibroNegocio.cs`.
+
+```csharp
+// El Where aquí recorre una lista en RAM, no genera SQL
+public static List<LibroEntidad> FiltrarPorGenero(string genero)
+{
+    List<LibroEntidad> todosLosLibros = LibroDatos.ObtenerLibrosDisponibles();
+
+    return todosLosLibros
+        .Where(l => l.Genero.ToLower() == genero.ToLower())
+        .ToList();
+}
+
+// GroupBy en memoria: produce un diccionario género → cantidad de libros
+public static Dictionary<string, int> ContarPorGenero()
+{
+    List<LibroEntidad> todosLosLibros = LibroDatos.ObtenerLibrosDisponibles();
+
+    return todosLosLibros
+        .GroupBy(l => l.Genero)
+        .ToDictionary(g => g.Key, g => g.Count());
+}
+```
+
+**Diferencia clave con el Caso 1:** El `Where` de `LibroDatos.cs` genera `WHERE` en SQL. El `Where` de `LibroNegocio.cs` itera una lista ya cargada. El código se ve igual pero el motor de ejecución es completamente distinto.
+
+---
+
+## 5. Caso de Estudio 4: Sistema de Inventario
+
+**Contexto:** Una tienda controla su stock: detectar productos por agotarse, calcular el valor del inventario por categoría y procesar ventas validando existencias. Este caso muestra cómo **combinar múltiples agregados en una sola consulta** y cómo la Capa de Negocio protege la integridad de los datos con reglas de negocio.
+
+> **Referencia:** Proyecto `InventarioApp`, archivo `Inventario.Entidades/ProductoEntidad.cs`.
+
+```csharp
+public class ProductoEntidad
+{
+    public int ID { get; set; }
+    public string Nombre { get; set; }
+    public string Categoria { get; set; }
+    public decimal Precio { get; set; }
+    public int Stock { get; set; }
+}
+
+// DTO: clase liviana solo para transferir datos procesados, nunca se guarda en BD
+public class ResumenCategoriaEntidad
+{
+    public string NombreCategoria { get; set; }
+    public int TotalProductos { get; set; }
+    public decimal ValorTotalInventario { get; set; }
+    public decimal PrecioPromedio { get; set; }
+    public int StockMinimo { get; set; }
+}
+```
+
+### 5.1. Capa de Datos — Cuatro agregados en una sola consulta
+
+Esta consulta combina `Count`, `Sum`, `Average` y `Min` en un único `GroupBy`, generando un solo `GROUP BY` en SQL Server.
+
+> **Referencia:** Proyecto `InventarioApp`, archivo `Inventario.Datos/ProductoDatos.cs`, método `ObtenerResumenPorCategoria`.
+
+```csharp
+public static List<ResumenCategoriaEntidad> ObtenerResumenPorCategoria()
+{
+    using (var contexto = new InventarioContext())
+    {
+        return contexto.Productos
+            .GroupBy(p => p.Categoria.Nombre)
+            .Select(grupo => new ResumenCategoriaEntidad
+            {
+                NombreCategoria      = grupo.Key,
+                TotalProductos       = grupo.Count(),
+                ValorTotalInventario = grupo.Sum(p => p.Precio * p.Stock),
+                PrecioPromedio       = grupo.Average(p => p.Precio),
+                StockMinimo          = grupo.Min(p => p.Stock)
+            })
+            .OrderByDescending(r => r.ValorTotalInventario)
+            .ToList();
+    }
+}
+```
+
+El SQL equivalente que genera EF Core es:
+
+```sql
+SELECT Categorias.Nombre,
+       COUNT(*) AS TotalProductos,
+       SUM(Precio * Stock) AS ValorTotalInventario,
+       AVG(Precio) AS PrecioPromedio,
+       MIN(Stock) AS StockMinimo
+FROM Productos
+INNER JOIN Categorias ON Productos.CategoriaID = Categorias.ID
+GROUP BY Categorias.Nombre
+ORDER BY ValorTotalInventario DESC
+```
+
+### 5.2. Capa de Negocio — Regla de negocio antes de modificar datos
+
+La validación de stock no ocurre en la interfaz ni en la base de datos, sino exclusivamente en la Capa de Negocio. Si el stock es insuficiente, la operación se detiene antes de llegar a `SaveChanges()`.
+
+> **Referencia:** Proyecto `InventarioApp`, archivo `Inventario.Negocio/ProductoNegocio.cs`, método `ProcesarVenta`.
+
+```csharp
+public static string ProcesarVenta(int idProducto, int cantidadVendida)
+{
+    // 1. Obtiene datos de la Capa de Datos (ya en memoria como List<T>)
+    var producto = ProductoDatos.ObtenerTodos()
+        .FirstOrDefault(p => p.ID == idProducto);  // LINQ to Objects
+
+    if (producto == null)
+        return "Error: Producto no encontrado.";
+
+    // 2. Regla de negocio: ¿Hay stock suficiente?
+    if (producto.Stock < cantidadVendida)
+        return $"Error: Stock insuficiente. Disponible: {producto.Stock} unidades.";
+
+    // 3. Solo si pasa la validación, se actualiza la base de datos
+    int nuevoStock = producto.Stock - cantidadVendida;
+    ProductoDatos.ActualizarStock(idProducto, nuevoStock);
+    return $"Venta registrada. Stock actualizado a {nuevoStock} unidades.";
+}
+```
+
+### 5.3. Resumen de agregados usados
+
+| Función | Resultado en el reporte |
+| :--- | :--- |
+| `Count()` | Total de productos por categoría |
+| `Sum(p => p.Precio * p.Stock)` | Valor económico total del inventario |
+| `Average(p => p.Precio)` | Precio promedio de la categoría |
+| `Min(p => p.Stock)` | Producto con menos existencias |
+| `OrderByDescending` | Categorías más valiosas primero |
+
+---
+
+## 6. Referencias (Formato IEEE)
 
 * [1] Microsoft, "LINQ to SQL," *Microsoft Learn*. [Online]. Disponible en: [https://learn.microsoft.com/es-es/dotnet/framework/data/adonet/sql/linq/](https://learn.microsoft.com/es-es/dotnet/framework/data/adonet/sql/linq/). [Accedido: 15-jun-2026].
 
 * [2] Microsoft, "Introducción a Entity Framework," *Microsoft Learn*. [Online]. Disponible en: [https://learn.microsoft.com/es-es/ef/ef6/](https://learn.microsoft.com/es-es/ef/ef6/). [Accedido: 15-jun-2026].
 
 * [3] Microsoft, "ADO.NET con SqlClient," *Microsoft Learn*. [Online]. Disponible en: [https://learn.microsoft.com/es-es/dotnet/framework/data/adonet/sql-server-connections](https://learn.microsoft.com/es-es/dotnet/framework/data/adonet/sql-server-connections). [Accedido: 15-jun-2026].
+
+* [4] Microsoft, "Agrupación de datos (C#) — GroupBy," *Microsoft Learn*. [Online]. Disponible en: [https://learn.microsoft.com/es-es/dotnet/csharp/linq/group-query-results](https://learn.microsoft.com/es-es/dotnet/csharp/linq/group-query-results). [Accedido: 15-jun-2026].
+
+* [5] Microsoft, "Guardado de datos básico — Entity Framework Core," *Microsoft Learn*. [Online]. Disponible en: [https://learn.microsoft.com/es-es/ef/core/saving/basic](https://learn.microsoft.com/es-es/ef/core/saving/basic). [Accedido: 15-jun-2026].
