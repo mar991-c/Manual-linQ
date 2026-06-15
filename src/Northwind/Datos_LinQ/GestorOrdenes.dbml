@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="Northwind" Class="DataClasses1DataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=.\sqlexpress;Initial Catalog=Northwind;Integrated Security=True;Encrypt=True;Trust Server Certificate=True" SettingsObjectName="Datos_LinQ.Properties.Settings" SettingsPropertyName="NorthwindConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.vw_GestionOrdenesPorEmpleados" Member="vw_GestionOrdenesPorEmpleados">
+    <Type Name="vw_GestionOrdenesPorEmpleados">
+      <Column Name="añoOrden" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="MesOrden" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DiaOrden" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="NombreEmpleado" Type="System.String" DbType="NVarChar(31) NOT NULL" CanBeNull="false" />
+      <Column Name="Edad" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CompanyName" Type="System.String" DbType="NVarChar(40) NOT NULL" CanBeNull="false" />
+      <Column Name="Country" Type="System.String" DbType="NVarChar(15)" CanBeNull="true" />
+      <Column Name="ProductName" Type="System.String" DbType="NVarChar(40) NOT NULL" CanBeNull="false" />
+      <Column Name="CategoryName" Type="System.String" DbType="NVarChar(15) NOT NULL" CanBeNull="false" />
+      <Column Name="UnitPrice" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="Quantity" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="montoReacudado" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+    </Type>
+  </Table>
+</Database>

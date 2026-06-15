@@ -160,7 +160,24 @@ public MejorEmpleadoTrimestre ObtenerMejorEmpleado()
 
 \---
 
+### Ejemplo 4: Promedio (Average) y Ordenamiento (OrderBy)
+Para obtener el precio promedio de los productos por categoría y ordenarlos de mayor a menor.
 
+```csharp
+public List<dynamic> ObtenerPreciosPromedio()
+{
+    using (var _context = new NorthwindContext())
+    {
+        return _context.Products
+            .GroupBy(p => p.Category.CategoryName)
+            .Select(g => new {
+                Categoria = g.Key,
+                PrecioPromedio = g.Average(p => p.UnitPrice) // Calcula el promedio
+            })
+            .OrderByDescending(x => x.PrecioPromedio)        // Ordena por el promedio
+            .ToList<dynamic>();
+    }
+}
 
 \## 3. Ventajas y Desventajas del Procesamiento de Agregados
 

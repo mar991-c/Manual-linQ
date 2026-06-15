@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="Datos_LinQ/Datos_LinQ.csproj" Id="0b948424-9c48-45ba-b380-712a09b59380" />
+  <Project Path="Northwind_Datos/Northwind_Datos.csproj" Id="d522b12a-bb9a-45eb-881e-6f052bc07a5a" />
+  <Project Path="Northwind_Entidades/Northwind_Entidades.csproj" Id="900e3fca-2e57-4919-8d4c-467ee624610a" />
+  <Project Path="Northwind_Logica/Northwind_Logica.csproj" Id="9ded2c1b-ace0-41d6-a6f4-13d993ab6967" />
+  <Project Path="Presentacion_Northwind/Presentacion_Northwind.csproj" Id="62903e5e-6a24-4c8f-b8d2-63fa1ce8a0f3" />
+</Solution>
