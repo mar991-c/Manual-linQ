@@ -61,14 +61,15 @@ graph TD
     A[Capa de Presentación] -->|Solo conoce a| B[Capa de Negocio]
     B -->|Solo conoce a| C[Capa de Datos]
     D((Capa de Entidades))
+    
     A -.->|Usa Modelos de| D
     B -.->|Usa Modelos de| D
     C -.->|Llena Modelos de| D
-    style A fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
-    style B fill:#fff3e0,stroke:#f57c00,stroke-width:2px
-    style C fill:#e8f5e9,stroke:#388e3c,stroke-width:2px
-    style D fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px,stroke-dasharray: 5 5
-```
+    
+    style A fill:#e1f5fe,stroke:#0288d1,stroke-width:2px,color:#000000
+    style B fill:#fff3e0,stroke:#f57c00,stroke-width:2px,color:#000000
+    style C fill:#e8f5e9,stroke:#388e3c,stroke-width:2px,color:#000000
+    style D fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px,stroke-dasharray: 5 5,color:#000000
 
 ## 4. Ventajas y Desventajas del Modelo
 
