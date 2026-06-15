@@ -1,0 +1,12 @@
+site_name: Manual Avanzado de LINQ y Arquitectura
+theme:
+  name: material
+  palette:
+    scheme: slate
+nav:
+  - Inicio: index.md
+  - 1. Qué es LINQ: que-es-linq.md
+  - 2. Arquitectura de 4 Capas: arquitectura.md
+  - 3. Funciones de Agregado: agregados.md
+  - 4. Funciones CRUD: crud.md
+  - 5. Casos de Estudio: casos.md
