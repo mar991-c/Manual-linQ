@@ -462,7 +462,7 @@ var resultado = contexto.vw_GestionOrdenesPorEmpleados
     .ToList();
 ```
 
-![Gráfico: Monto total recaudado por cada empleado](imagenes/grafico-monto-empleados.png)
+![Gráfico: Monto total recaudado por cada empleado](./imagenes/grafico-monto-empleados.png)
 
 *Figura 1: Monto total recaudado por empleado. Peacock Margaret lidera con $250,187.45.*
 
@@ -486,7 +486,7 @@ var resultado = _context.OrderDetails
     .ToList();
 ```
 
-![Gráfico: Cantidad de órdenes por categoría](imagenes/grafico-categoria.png)
+![Gráfico: Cantidad de órdenes por categoría](./imagenes/grafico-categoria.png)
 
 *Figura 2: Beverages lidera con 404 órdenes, seguido de Dairy Products con 366.*
 
@@ -518,7 +518,7 @@ var resultado = _context.Orders
     .ToList();
 ```
 
-![Gráfico: Top 3 empleados del último trimestre](imagenes/grafico-mejores-empleados.png)
+![Gráfico: Top 3 empleados del último trimestre](./imagenes/grafico-mejores-empleados.png)
 
 *Figura 3: Top 3 empleados excluyendo Condiments y Confections. Peacock Margaret: $30,096.98.*
 
@@ -545,7 +545,7 @@ var consulta = contexto.vw_GestionOrdenesPorEmpleados
     .ToList();
 ```
 
-![Gráfico: Top 10 clientes por gasto total](imagenes/grafico-clientes.png)
+![Gráfico: Top 10 clientes por gasto total](./imagenes/grafico-clientes.png)
 
 *Figura 4: QUICK-Stop (Alemania) lidera con $117,483.39 en 86 órdenes.*
 
@@ -572,7 +572,7 @@ var reporte = _context.Orders
     .ToList();
 ```
 
-![Gráfico: Ventas totales por país](imagenes/grafico-pais.png)
+![Gráfico: Ventas totales por país](./imagenes/grafico-pais.png)
 
 *Figura 5: USA lidera con $263,566.98 y 13 clientes únicos.*
 
