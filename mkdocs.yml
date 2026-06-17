@@ -1,4 +1,6 @@
 site_name: Manual Avanzado de LINQ y Arquitectura
+repo_url: https://github.com/mar991-c/Manual-linQ
+repo_name: mar991-c/Manual-linQ
 theme:
   name: material
   palette:
