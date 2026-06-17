@@ -689,20 +689,17 @@
 <p>Para entender por qué existe LINQ vale la pena retroceder un poco en el tiempo. C# fue diseñado por Anders Hejlsberg, el ingeniero danés que antes había creado Turbo Pascal y Delphi en Borland, y que Microsoft contrató en 1996 para liderar el diseño de un nuevo lenguaje, cuyo nombre interno era "Cool", que terminaría llamándose C#. La primera versión se lanzó junto con el .NET Framework 1.0 en 2002, y durante varios años el lenguaje creció incorporando funcionalidades clásicas de la programación orientada a objetos.</p>
 <p>El salto que nos interesa ocurrió en 2007, con el lanzamiento de C# 3.0 junto al .NET Framework 3.5. La idea original surgió años antes, cuando Hejlsberg y Peter Golde, entonces a cargo del compilador de C#, comenzaron a explorar cómo integrar la consulta de datos directamente en el lenguaje. Las primeras versiones experimentales de esta idea ni siquiera se llamaban LINQ: usaban una sintaxis parecida a <code>sequence&lt;Customer&gt; locals = customers.where(ZipCode == 98112)</code>, donde "sequence" era un alias temprano de lo que hoy conocemos como <code>IEnumerable&lt;T&gt;</code>.</p>
 <p>Esa propuesta fue tomando forma hasta convertirse en LINQ, y se lanzó junto con un paquete de características del lenguaje diseñadas específicamente para hacerla posible: expresiones lambda, el operador <code>var</code> para inferencia de tipos, métodos de extensión, tipos anónimos y árboles de expresión. Ninguna de estas piezas existía antes de 2007 de forma aislada; se construyeron como un conjunto para que LINQ pudiera funcionar.</p>
-<pre class="mermaid"><code>graph LR
+<pre class="mermaid"><code>graph TD
     A[1996: Hejlsberg&lt;br/&gt;llega a Microsoft] --&gt; B[2002: Lanzamiento de&lt;br/&gt;.NET 1.0 y C# 1.0]
-    B --&gt; C[Hejlsberg y Golde explorando&lt;br/&gt;consultas integradas al lenguaje]
+    B --&gt; C[Hejlsberg y Golde&lt;br/&gt;explorando consultas&lt;br/&gt;integradas al lenguaje]
     C --&gt; D[2007: C# 3.0 y .NET 3.5&lt;br/&gt;Lanzamiento oficial de LINQ]
-    D --&gt; E[Actualidad: LINQ sigue siendo&lt;br/&gt;el estandar de consultas en C#]
+    D --&gt; E[Actualidad: LINQ sigue&lt;br/&gt;siendo el estandar&lt;br/&gt;de consultas en C#]
 
-    classDef darkText color:#000;
-    class A,B,C,D,E darkText;
-
-    style A fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
-    style B fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
-    style C fill:#fff3e0,stroke:#f57c00,stroke-width:2px
-    style D fill:#e8f5e9,stroke:#388e3c,stroke-width:2px
-    style E fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
+    style A fill:#e1f5fe,stroke:#0288d1,stroke-width:2px,color:#000
+    style B fill:#e1f5fe,stroke:#0288d1,stroke-width:2px,color:#000
+    style C fill:#fff3e0,stroke:#f57c00,stroke-width:2px,color:#000
+    style D fill:#e8f5e9,stroke:#388e3c,stroke-width:2px,color:#000
+    style E fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px,color:#000
 
     linkStyle default color:#9ca3af</code></pre>
 <p>Lo interesante es que, casi veinte años después, LINQ sigue siendo una de las señas de identidad más reconocibles de C#. Cuando alguien escribe hoy <code>_context.Estudiantes.Where(e =&gt; e.Edad &gt; 18).ToList()</code>, está usando directamente ese conjunto de ideas que nació de una pregunta bastante simple: ¿por qué hay que aprender un lenguaje distinto, como SQL, para hacer algo tan cotidiano como filtrar una lista de datos?</p>
@@ -732,15 +729,12 @@
     B --&gt;|IEnumerable, ya esta&lt;br/&gt;en memoria| E[Se ejecuta en C#]
     E --&gt; F[La aplicacion recorre&lt;br/&gt;los elementos uno por uno]
 
-    classDef darkText color:#000;
-    class A,B,C,D,E,F darkText;
-
-    style A fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
-    style B fill:#fff3e0,stroke:#f57c00,stroke-width:2px
-    style C fill:#e8f5e9,stroke:#388e3c,stroke-width:2px
-    style D fill:#e8f5e9,stroke:#388e3c,stroke-width:2px
-    style E fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
-    style F fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
+    style A fill:#e1f5fe,stroke:#0288d1,stroke-width:2px,color:#000
+    style B fill:#fff3e0,stroke:#f57c00,stroke-width:2px,color:#000
+    style C fill:#e8f5e9,stroke:#388e3c,stroke-width:2px,color:#000
+    style D fill:#e8f5e9,stroke:#388e3c,stroke-width:2px,color:#000
+    style E fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px,color:#000
+    style F fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px,color:#000
 
     linkStyle default color:#9ca3af</code></pre>
 <p>La consecuencia práctica de esto es enorme. Si una consulta empieza como <code>IQueryable</code> y se llama a <code>.ToList()</code> demasiado pronto, todo lo que se encadene después de esa llamada deja de traducirse a SQL: pasa a ejecutarse en memoria, sobre el <code>IEnumerable</code> resultante. Por ejemplo:</p>
