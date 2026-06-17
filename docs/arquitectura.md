@@ -61,16 +61,16 @@ graph TD
     A[Capa de Presentacion] -->|Solo conoce a| B[Capa de Negocio]
     B -->|Solo conoce a| C[Capa de Datos]
     D((Capa de Entidades))
- 
+
     A -.->|Usa Modelos de| D
     B -.->|Usa Modelos de| D
     C -.->|Llena Modelos de| D
- 
-    style A fill:#e1f5fe,stroke:#0288d1,stroke-width:2px,color:#000
-    style B fill:#fff3e0,stroke:#f57c00,stroke-width:2px,color:#000
-    style C fill:#e8f5e9,stroke:#388e3c,stroke-width:2px,color:#000
-    style D fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px,stroke-dasharray: 5 5,color:#000
- 
+
+    style A fill:#0c4a6e,stroke:#38bdf8,stroke-width:2px,color:#ffffff
+    style B fill:#7c2d12,stroke:#fb923c,stroke-width:2px,color:#ffffff
+    style C fill:#14532d,stroke:#4ade80,stroke-width:2px,color:#ffffff
+    style D fill:#581c87,stroke:#c084fc,stroke-width:2px,stroke-dasharray: 5 5,color:#ffffff
+
     linkStyle default color:#9ca3af
 ```
 
@@ -83,7 +83,7 @@ graph TD
 
 ---
 
-## 5. Referencias (Formato IEEE)
+## 5. Referencias
 
 * [1] Microsoft, "Estilo de arquitectura de n niveles," *Azure Architecture Center*. [Online]. Disponible en: [https://learn.microsoft.com/es-es/azure/architecture/guide/architecture-styles/n-tier](https://learn.microsoft.com/es-es/azure/architecture/guide/architecture-styles/n-tier). [Accedido: 15-jun-2026].
 
