@@ -411,10 +411,66 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#3-ventajas-y-desventajas-del-uso-de-joins-en-linq" class="md-nav__link">
+  <a href="#3-combinaciones-agrupadas-groupjoin" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3. Ventajas y Desventajas del Uso de Joins en LINQ
+        3. Combinaciones Agrupadas: GroupJoin
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Combinaciones Agrupadas: GroupJoin">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ejemplo-cada-categoria-junto-con-todos-sus-productos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ejemplo: Cada categoría junto con todos sus productos
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-left-outer-join-con-defaultifempty" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Left Outer Join con DefaultIfEmpty
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Left Outer Join con DefaultIfEmpty">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ejemplo-todas-las-categorias-incluso-sin-productos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ejemplo: Todas las categorías, incluso sin productos
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-ventajas-y-desventajas-del-uso-de-joins-en-linq" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Ventajas y Desventajas del Uso de Joins en LINQ
       
     </span>
   </a>
@@ -422,10 +478,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#4-referencias-formato-ieee" class="md-nav__link">
+  <a href="#6-referencias" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4. Referencias (Formato IEEE)
+        6. Referencias
       
     </span>
   </a>
@@ -614,10 +670,66 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#3-ventajas-y-desventajas-del-uso-de-joins-en-linq" class="md-nav__link">
+  <a href="#3-combinaciones-agrupadas-groupjoin" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3. Ventajas y Desventajas del Uso de Joins en LINQ
+        3. Combinaciones Agrupadas: GroupJoin
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Combinaciones Agrupadas: GroupJoin">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ejemplo-cada-categoria-junto-con-todos-sus-productos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ejemplo: Cada categoría junto con todos sus productos
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-left-outer-join-con-defaultifempty" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Left Outer Join con DefaultIfEmpty
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Left Outer Join con DefaultIfEmpty">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ejemplo-todas-las-categorias-incluso-sin-productos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ejemplo: Todas las categorías, incluso sin productos
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-ventajas-y-desventajas-del-uso-de-joins-en-linq" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Ventajas y Desventajas del Uso de Joins en LINQ
       
     </span>
   </a>
@@ -625,10 +737,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#4-referencias-formato-ieee" class="md-nav__link">
+  <a href="#6-referencias" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4. Referencias (Formato IEEE)
+        6. Referencias
       
     </span>
   </a>
@@ -654,22 +766,19 @@
 
 <h1 id="capitulo-4-cruce-de-tablas-join-en-linq">Capítulo 4: Cruce de Tablas (Join) en LINQ</h1>
 <h2 id="1-que-es-un-join-y-cual-es-la-logica-subyacente">1. ¿Qué es un Join y cuál es la lógica subyacente?</h2>
-<p>En las bases de datos relacionales normalizadas, la información está distribuida en múltiples tablas para evitar redundancia. Por ejemplo, la tabla <code>Products</code> no guarda el nombre de la categoría, solo guarda un número (<code>CategoryID</code>). </p>
-<p>Un <strong>Join (Cruce)</strong> es la operación que nos permite emparejar los registros de dos tablas diferentes utilizando una "llave" en común. </p>
-<p><strong>La Lógica Crítica:</strong></p>
-<p>En lugar de hacer dos consultas separadas a la base de datos (una para traer productos y otra para traer categorías) y luego unirlas manualmente con un bucle <code>for</code> en la memoria RAM (lo cual colapsaría el servidor por lentitud), utilizamos la instrucción <code>Join</code> de LINQ. </p>
-<p>Al hacerlo, Entity Framework traduce nuestra instrucción a un <code>INNER JOIN</code> de SQL. La base de datos, que está altamente optimizada para esta tarea, hace el cruce internamente y nos devuelve únicamente el resultado final fusionado.</p>
+<p>En las bases de datos relacionales normalizadas, la información está distribuida en múltiples tablas para evitar redundancia. Por ejemplo, la tabla <code>Products</code> no guarda el nombre de la categoría, solo guarda un número (<code>CategoryID</code>). Un Join, o cruce, es la operación que permite emparejar los registros de dos tablas diferentes utilizando una llave en común.</p>
+<p>En lugar de hacer dos consultas separadas a la base de datos (una para traer productos y otra para traer categorías) y luego unirlas manualmente con un bucle <code>for</code> en la memoria RAM, lo cual colapsaría el servidor por lentitud, se utiliza la instrucción <code>Join</code> de LINQ. Entity Framework traduce esa instrucción a un <code>INNER JOIN</code> de SQL, y la base de datos, que está altamente optimizada para esta tarea, hace el cruce internamente y devuelve únicamente el resultado final ya fusionado.</p>
 <hr />
 <h2 id="2-sintaxis-de-join-en-linq-query-vs-method">2. Sintaxis de Join en LINQ: Query vs. Method</h2>
-<p>A diferencia del <code>Where</code> o el <code>Sum</code>, el cruce de tablas en C# se puede escribir de dos maneras. Profesionalmente, cuando se hacen cruces complejos, se prefiere la <strong>Sintaxis de Consulta (Query Syntax)</strong> porque es infinitamente más fácil de leer que la sintaxis de métodos.</p>
+<p>A diferencia del <code>Where</code> o el <code>Sum</code>, el cruce de tablas en C# se puede escribir de dos maneras. Profesionalmente, cuando se hacen cruces complejos, se prefiere la sintaxis de consulta (Query Syntax) porque resulta más fácil de leer que la sintaxis de métodos.</p>
 <h3 id="ejemplo-practico-unir-productos-con-categorias">Ejemplo Práctico: Unir Productos con Categorías</h3>
-<p>Supongamos que la Capa de Presentación necesita mostrar un catálogo web. Hemos creado un DTO llamado <code>ProductoDetalle</code> que espera recibir el Nombre del Producto, su Precio y el Nombre de su Categoría (texto real, no el ID).</p>
+<p>Supongamos que la Capa de Presentación necesita mostrar un catálogo web. Se ha creado un DTO llamado <code>ProductoDetalle</code> que espera recibir el nombre del producto, su precio y el nombre de su categoría como texto real, no el ID.</p>
 <p><strong>Opción A: Sintaxis de Consulta (Recomendada para Joins)</strong></p>
 <div class="highlight"><pre><span></span><code><span class="k">public</span><span class="w"> </span><span class="n">List</span><span class="o">&lt;</span><span class="n">ProductoDetalle</span><span class="o">&gt;</span><span class="w"> </span><span class="n">ObtenerCatalogoProductos</span><span class="p">()</span>
 <span class="p">{</span>
 <span class="w">    </span><span class="kt">var</span><span class="w"> </span><span class="n">catalogo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="k">from</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">_context</span><span class="p">.</span><span class="n">Products</span>
 <span class="w">                    </span><span class="k">join</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">_context</span><span class="p">.</span><span class="n">Categories</span><span class="w"> </span>
-<span class="w">                    </span><span class="k">on</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">CategoryID</span><span class="w"> </span><span class="k">equals</span><span class="w"> </span><span class="n">c</span><span class="p">.</span><span class="n">CategoryID</span><span class="w"> </span><span class="c1">// La llave en común</span>
+<span class="w">                    </span><span class="k">on</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">CategoryID</span><span class="w"> </span><span class="k">equals</span><span class="w"> </span><span class="n">c</span><span class="p">.</span><span class="n">CategoryID</span><span class="w"> </span><span class="c1">// La llave en comun</span>
 <span class="w">                    </span><span class="k">select</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ProductoDetalle</span><span class="w">          </span><span class="c1">// Proyectamos directo al DTO</span>
 <span class="w">                    </span><span class="p">{</span>
 <span class="w">                        </span><span class="n">NombreProducto</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">ProductName</span><span class="p">,</span>
@@ -680,7 +789,7 @@
 <span class="p">}</span>
 </code></pre></div>
 <p><strong>Opción B: Sintaxis de Métodos (Lambda)</strong></p>
-<p>El mismo cruce exacto, pero usando el método <code>.Join()</code>. Funciona igual, pero su lectura se vuelve confusa si necesitamos cruzar 3 o 4 tablas a la vez.</p>
+<p>El mismo cruce exacto, pero usando el método <code>.Join()</code>. Funciona igual, pero su lectura se vuelve confusa si se necesitan cruzar tres o cuatro tablas a la vez.</p>
 <div class="highlight"><pre><span></span><code><span class="k">public</span><span class="w"> </span><span class="n">List</span><span class="o">&lt;</span><span class="n">ProductoDetalle</span><span class="o">&gt;</span><span class="w"> </span><span class="n">ObtenerCatalogoMetodos</span><span class="p">()</span>
 <span class="p">{</span>
 <span class="w">    </span><span class="kt">var</span><span class="w"> </span><span class="n">catalogo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_context</span><span class="p">.</span><span class="n">Products</span>
@@ -688,7 +797,7 @@
 <span class="w">            </span><span class="n">_context</span><span class="p">.</span><span class="n">Categories</span><span class="p">,</span>
 <span class="w">            </span><span class="n">producto</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">producto</span><span class="p">.</span><span class="n">CategoryID</span><span class="p">,</span><span class="w">      </span><span class="c1">// Llave de la tabla A</span>
 <span class="w">            </span><span class="n">categoria</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">categoria</span><span class="p">.</span><span class="n">CategoryID</span><span class="p">,</span><span class="w">    </span><span class="c1">// Llave de la tabla B</span>
-<span class="w">            </span><span class="p">(</span><span class="n">producto</span><span class="p">,</span><span class="w"> </span><span class="n">categoria</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ProductoDetalle</span><span class="w"> </span><span class="c1">// Resultado combinado (Proyección)</span>
+<span class="w">            </span><span class="p">(</span><span class="n">producto</span><span class="p">,</span><span class="w"> </span><span class="n">categoria</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ProductoDetalle</span><span class="w"> </span><span class="c1">// Resultado combinado</span>
 <span class="w">            </span><span class="p">{</span>
 <span class="w">                </span><span class="n">NombreProducto</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">producto</span><span class="p">.</span><span class="n">ProductName</span><span class="p">,</span>
 <span class="w">                </span><span class="n">NombreCategoria</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">categoria</span><span class="p">.</span><span class="n">CategoryName</span><span class="p">,</span>
@@ -698,7 +807,55 @@
 <span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">catalogo</span><span class="p">;</span>
 <span class="p">}</span>
 </code></pre></div>
-<h2 id="3-ventajas-y-desventajas-del-uso-de-joins-en-linq">3. Ventajas y Desventajas del Uso de Joins en LINQ</h2>
+<p>Ambos enfoques anteriores generan exactamente el mismo tipo de cruce: un <code>INNER JOIN</code>, donde solo aparecen en el resultado las filas que tienen coincidencia en ambas tablas. Si una categoría no tiene ningún producto asociado, esa categoría simplemente no aparece en ninguno de los dos ejemplos anteriores. Las dos secciones siguientes resuelven justamente ese problema.</p>
+<hr />
+<h2 id="3-combinaciones-agrupadas-groupjoin">3. Combinaciones Agrupadas: GroupJoin</h2>
+<p><code>GroupJoin</code> resuelve una necesidad distinta a la del <code>Join</code> clásico: en vez de devolver una fila por cada coincidencia entre las dos tablas, agrupa todos los elementos relacionados de la segunda tabla dentro de una sola colección por cada elemento de la primera. Es la forma natural de responder a la pregunta "para cada categoría, dame la lista completa de sus productos", en lugar de "dame una fila por cada producto junto a su categoría".</p>
+<h3 id="ejemplo-cada-categoria-junto-con-todos-sus-productos">Ejemplo: Cada categoría junto con todos sus productos</h3>
+<blockquote>
+<p><strong>Referencia:</strong> Proyecto <code>Northwind_Logica</code>, archivo <code>CategoriaConProductos_Logica.cs</code>.</p>
+</blockquote>
+<div class="highlight"><pre><span></span><code><span class="k">public</span><span class="w"> </span><span class="n">List</span><span class="o">&lt;</span><span class="n">CategoriaConProductos</span><span class="o">&gt;</span><span class="w"> </span><span class="n">ObtenerCategoriasConSusProductos</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="kt">var</span><span class="w"> </span><span class="n">resultado</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="k">from</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">_context</span><span class="p">.</span><span class="n">Categories</span>
+<span class="w">                      </span><span class="k">join</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">_context</span><span class="p">.</span><span class="n">Products</span>
+<span class="w">                      </span><span class="k">on</span><span class="w"> </span><span class="n">c</span><span class="p">.</span><span class="n">CategoryID</span><span class="w"> </span><span class="k">equals</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">CategoryID</span><span class="w"> </span><span class="k">into</span><span class="w"> </span><span class="n">productosDeLaCategoria</span>
+<span class="w">                      </span><span class="k">select</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">CategoriaConProductos</span>
+<span class="w">                      </span><span class="p">{</span>
+<span class="w">                          </span><span class="n">NombreCategoria</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">c</span><span class="p">.</span><span class="n">CategoryName</span><span class="p">,</span>
+<span class="w">                          </span><span class="n">Productos</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">productosDeLaCategoria</span><span class="p">.</span><span class="n">ToList</span><span class="p">()</span><span class="w"> </span><span class="c1">// Una lista completa por cada categoria</span>
+<span class="w">                      </span><span class="p">}).</span><span class="n">ToList</span><span class="p">();</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">resultado</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>La palabra clave <code>into</code> es la que marca la diferencia frente a un <code>Join</code> normal: en lugar de aplanar el resultado en filas individuales, captura el grupo completo de productos que coinciden con cada categoría en una variable (<code>productosDeLaCategoria</code>), que después se puede convertir en lista, contar o recorrer. Nótese que, a diferencia del <code>Join</code> de la sección anterior, aquí cada categoría aparece una sola vez en el resultado, sin importar si tiene cero, uno o cien productos asociados.</p>
+<hr />
+<h2 id="4-left-outer-join-con-defaultifempty">4. Left Outer Join con DefaultIfEmpty</h2>
+<p>Tanto el <code>Join</code> como el <code>GroupJoin</code> vistos hasta ahora comparten una limitación: si una categoría no tiene ningún producto, simplemente no aparece en el resultado, o aparece con una lista de productos vacía pero la categoría sigue estando ahí solo en el caso de <code>GroupJoin</code>. Sin embargo, hay escenarios donde se necesita exactamente lo opuesto al comportamiento de un <code>Join</code> normal: traer todas las categorías sin excepción, incluso las que todavía no tienen productos cargados, para por ejemplo mostrar un reporte de inventario completo donde las categorías vacías también sean visibles.</p>
+<p>Esto se conoce como Left Outer Join, y en LINQ se construye combinando un <code>GroupJoin</code> con el método <code>DefaultIfEmpty()</code>.</p>
+<h3 id="ejemplo-todas-las-categorias-incluso-sin-productos">Ejemplo: Todas las categorías, incluso sin productos</h3>
+<blockquote>
+<p><strong>Referencia:</strong> Proyecto <code>Northwind_Logica</code>, archivo <code>CategoriaConProductos_Logica.cs</code>, método <code>ObtenerTodasLasCategoriasConONoProductos</code>.</p>
+</blockquote>
+<div class="highlight"><pre><span></span><code><span class="k">public</span><span class="w"> </span><span class="n">List</span><span class="o">&lt;</span><span class="n">ProductoDetalle</span><span class="o">&gt;</span><span class="w"> </span><span class="n">ObtenerTodasLasCategoriasConONoProductos</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="kt">var</span><span class="w"> </span><span class="n">resultado</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="k">from</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">_context</span><span class="p">.</span><span class="n">Categories</span>
+<span class="w">                      </span><span class="k">join</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">_context</span><span class="p">.</span><span class="n">Products</span>
+<span class="w">                      </span><span class="k">on</span><span class="w"> </span><span class="n">c</span><span class="p">.</span><span class="n">CategoryID</span><span class="w"> </span><span class="k">equals</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">CategoryID</span><span class="w"> </span><span class="k">into</span><span class="w"> </span><span class="n">productosDeLaCategoria</span>
+<span class="w">                      </span><span class="k">from</span><span class="w"> </span><span class="n">productoOpcional</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">productosDeLaCategoria</span><span class="p">.</span><span class="n">DefaultIfEmpty</span><span class="p">()</span>
+<span class="w">                      </span><span class="k">select</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ProductoDetalle</span>
+<span class="w">                      </span><span class="p">{</span>
+<span class="w">                          </span><span class="n">NombreCategoria</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">c</span><span class="p">.</span><span class="n">CategoryName</span><span class="p">,</span>
+<span class="w">                          </span><span class="c1">// Si no hay producto, dejamos el nombre y precio en valores por defecto</span>
+<span class="w">                          </span><span class="n">NombreProducto</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">productoOpcional</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="k">null</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">productoOpcional</span><span class="p">.</span><span class="n">ProductName</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s">&quot;(Sin productos)&quot;</span><span class="p">,</span>
+<span class="w">                          </span><span class="n">Precio</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">productoOpcional</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="k">null</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">productoOpcional</span><span class="p">.</span><span class="n">UnitPrice</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">                      </span><span class="p">}).</span><span class="n">ToList</span><span class="p">();</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">resultado</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>El paso clave es <code>productosDeLaCategoria.DefaultIfEmpty()</code>. Cuando una categoría sí tiene productos, este método no cambia nada: simplemente entrega esos productos uno por uno, igual que lo haría un <code>Join</code> normal. Pero cuando una categoría no tiene ningún producto asociado, en lugar de descartar esa categoría del resultado, <code>DefaultIfEmpty()</code> entrega un único elemento <code>null</code> en su lugar, lo que obliga a validar con <code>productoOpcional != null</code> antes de leer sus propiedades, para no provocar una excepción de referencia nula.</p>
+<hr />
+<h2 id="5-ventajas-y-desventajas-del-uso-de-joins-en-linq">5. Ventajas y Desventajas del Uso de Joins en LINQ</h2>
 <table>
 <thead>
 <tr>
@@ -709,22 +866,28 @@
 <tbody>
 <tr>
 <td style="text-align: left;"><strong>Ventajas</strong></td>
-<td style="text-align: left;"><strong>Seguridad de Tipos:</strong> El compilador de Visual Studio verifica que las llaves (<code>CategoryID</code>) sean del mismo tipo (ej. ambos <code>int</code>) antes de ejecutar el programa, evitando errores en tiempo de ejecución.<br><strong>Protección SQL Injection:</strong> LINQ parametriza automáticamente las consultas generadas por el Join, blindando la base de datos contra ataques cibernéticos.</td>
+<td style="text-align: left;"><strong>Seguridad de Tipos:</strong> El compilador de Visual Studio verifica que las llaves (<code>CategoryID</code>) sean del mismo tipo antes de ejecutar el programa, evitando errores en tiempo de ejecución.<br><strong>Protección SQL Injection:</strong> LINQ parametriza automáticamente las consultas generadas por el Join, blindando la base de datos contra ataques cibernéticos.</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>Desventajas</strong></td>
-<td style="text-align: left;"><strong>Left Joins Complejos:</strong> Hacer cruces donde "traiga el producto incluso si no tiene categoría" (Left Outer Join) requiere una sintaxis de <code>DefaultIfEmpty()</code> que es verbosa y poco intuitiva en C#.<br><strong>Cuellos de Botella:</strong> Unir más de 4 tablas masivas en un solo LINQ puede generar planes de ejecución subóptimos en SQL Server. En esos casos extremos, se prefieren Procedimientos Almacenados (Stored Procedures).</td>
+<td style="text-align: left;"><strong>Verbosidad del Left Join:</strong> Como se vio en la sección 4, lograr un comportamiento de "traer todo incluso sin coincidencia" requiere combinar <code>into</code> y <code>DefaultIfEmpty()</code>, una sintaxis considerablemente menos directa que escribir <code>LEFT JOIN</code> en SQL.<br><strong>Cuellos de Botella:</strong> Unir más de 4 tablas masivas en un solo LINQ puede generar planes de ejecución subóptimos en SQL Server. En esos casos extremos, se prefieren Procedimientos Almacenados (Stored Procedures).</td>
 </tr>
 </tbody>
 </table>
 <hr />
-<h2 id="4-referencias-formato-ieee">4. Referencias (Formato IEEE)</h2>
+<h2 id="6-referencias">6. Referencias</h2>
 <ul>
 <li>
 <p>[1] Microsoft, "Realizar combinaciones internas (LINQ en C#)," <em>Microsoft Learn</em>. [Online]. Disponible en: <a href="https://learn.microsoft.com/es-es/dotnet/csharp/linq/perform-inner-joins">https://learn.microsoft.com/es-es/dotnet/csharp/linq/perform-inner-joins</a>. [Accedido: 15-jun-2026].</p>
 </li>
 <li>
 <p>[2] Microsoft, "Sintaxis de consulta y sintaxis de método en LINQ," <em>Microsoft Learn</em>. [Online]. Disponible en: <a href="https://learn.microsoft.com/es-es/dotnet/csharp/linq/query-syntax-and-method-syntax-in-linq">https://learn.microsoft.com/es-es/dotnet/csharp/linq/query-syntax-and-method-syntax-in-linq</a>. [Accedido: 15-jun-2026].</p>
+</li>
+<li>
+<p>[3] Microsoft, "Realizar combinaciones agrupadas (LINQ en C#)," <em>Microsoft Learn</em>. [Online]. Disponible en: <a href="https://learn.microsoft.com/es-es/dotnet/csharp/linq/perform-grouped-joins">https://learn.microsoft.com/es-es/dotnet/csharp/linq/perform-grouped-joins</a>. [Accedido: 16-jun-2026].</p>
+</li>
+<li>
+<p>[4] Microsoft, "Realizar combinaciones externas izquierdas (LINQ en C#)," <em>Microsoft Learn</em>. [Online]. Disponible en: <a href="https://learn.microsoft.com/es-es/dotnet/csharp/linq/perform-left-outer-joins">https://learn.microsoft.com/es-es/dotnet/csharp/linq/perform-left-outer-joins</a>. [Accedido: 16-jun-2026].</p>
 </li>
 </ul>
 

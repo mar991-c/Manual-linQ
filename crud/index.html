@@ -72,7 +72,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#capitulo-5-operaciones-crud-con-capas-estaticas" class="md-skip">
+        <a href="#capitulo-5-operaciones-crud-con-linq-y-entity-framework" class="md-skip">
           Skip to content
         </a>
       
@@ -410,10 +410,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#2-el-estandar-profesional-clases-estaticas-static" class="md-nav__link">
+  <a href="#2-una-decision-de-diseno-clases-estaticas" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. El Estándar Profesional: Clases Estáticas (Static)
+        2. Una Decisión de Diseño: Clases Estáticas
       
     </span>
   </a>
@@ -482,10 +482,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#4-ventajas-y-desventajas-del-crud-con-ef-core" class="md-nav__link">
+  <a href="#4-la-version-asincrona-savechangesasync" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4. Ventajas y Desventajas del CRUD con EF Core
+        4. La Versión Asíncrona: SaveChangesAsync
       
     </span>
   </a>
@@ -493,10 +493,21 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#5-referencias-formato-ieee" class="md-nav__link">
+  <a href="#5-ventajas-y-desventajas-del-crud-con-ef-core" class="md-nav__link">
     <span class="md-ellipsis">
       
-        5. Referencias (Formato IEEE)
+        5. Ventajas y Desventajas del CRUD con EF Core
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-referencias" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Referencias
       
     </span>
   </a>
@@ -630,10 +641,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#2-el-estandar-profesional-clases-estaticas-static" class="md-nav__link">
+  <a href="#2-una-decision-de-diseno-clases-estaticas" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. El Estándar Profesional: Clases Estáticas (Static)
+        2. Una Decisión de Diseño: Clases Estáticas
       
     </span>
   </a>
@@ -702,10 +713,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#4-ventajas-y-desventajas-del-crud-con-ef-core" class="md-nav__link">
+  <a href="#4-la-version-asincrona-savechangesasync" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4. Ventajas y Desventajas del CRUD con EF Core
+        4. La Versión Asíncrona: SaveChangesAsync
       
     </span>
   </a>
@@ -713,10 +724,21 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#5-referencias-formato-ieee" class="md-nav__link">
+  <a href="#5-ventajas-y-desventajas-del-crud-con-ef-core" class="md-nav__link">
     <span class="md-ellipsis">
       
-        5. Referencias (Formato IEEE)
+        5. Ventajas y Desventajas del CRUD con EF Core
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-referencias" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Referencias
       
     </span>
   </a>
@@ -740,38 +762,34 @@
 
 
 
-<h1 id="capitulo-5-operaciones-crud-con-capas-estaticas">Capítulo 5: Operaciones CRUD con Capas Estáticas</h1>
+<h1 id="capitulo-5-operaciones-crud-con-linq-y-entity-framework">Capítulo 5: Operaciones CRUD con LINQ y Entity Framework</h1>
 <h2 id="1-que-es-el-crud-y-la-logica-del-change-tracking">1. ¿Qué es el CRUD y la Lógica del Change Tracking?</h2>
-<p>El acrónimo <strong>CRUD</strong> representa las cuatro operaciones fundamentales de persistencia de datos: <strong>C</strong>reate (Insertar), <strong>R</strong>ead (Leer), <strong>U</strong>pdate (Actualizar) y <strong>D</strong>elete (Eliminar).</p>
-<p>En lugar de escribir comandos SQL manuales (que son propensos a inyecciones SQL y errores de sintaxis), utilizamos <strong>Entity Framework Core (EF Core)</strong>. </p>
-<p><strong>¿Por qué se hace de esta manera?</strong></p>
-<p>EF Core utiliza un patrón llamado <strong>Change Tracking</strong> (Rastreo de Cambios). Cuando obtienes un cliente de la base de datos usando LINQ, EF Core guarda ese objeto en la memoria RAM y "lo vigila". Si cambias el nombre del cliente en C# y ejecutas <code>.SaveChanges()</code>, EF Core detecta la modificación y genera automáticamente el comando <code>UPDATE</code> exacto para la base de datos.</p>
+<p>El acrónimo CRUD representa las cuatro operaciones fundamentales de persistencia de datos: Create (insertar), Read (leer), Update (actualizar) y Delete (eliminar).</p>
+<p>En lugar de escribir comandos SQL manuales, propensos a inyecciones SQL y errores de sintaxis, se utiliza Entity Framework Core. Esta tecnología funciona gracias a un mecanismo llamado Change Tracking, o rastreo de cambios. Cuando se obtiene un cliente de la base de datos usando LINQ, EF Core guarda ese objeto en la memoria RAM y lo vigila. Si se cambia el nombre del cliente en C# y se ejecuta <code>.SaveChanges()</code>, EF Core detecta la modificación por sí solo y genera automáticamente el comando <code>UPDATE</code> exacto que hace falta enviar a la base de datos, sin que el desarrollador tenga que escribirlo a mano.</p>
 <hr />
-<h2 id="2-el-estandar-profesional-clases-estaticas-static">2. El Estándar Profesional: Clases Estáticas (Static)</h2>
-<p>Para este manual, implementaremos el CRUD utilizando clases <code>static</code> en nuestras capas de Datos y Negocio.</p>
-<p><strong>¿Cuándo y por qué se utiliza?</strong></p>
-<p>En sistemas donde las transacciones son directas y no requieren mantener datos persistentes en la memoria del usuario entre clics (operaciones <em>stateless</em>), instanciar la clase de acceso a datos con <code>new CapaDatos()</code> una y otra vez consume recursos innecesarios y sobrecarga el Recolector de Basura (Garbage Collector) del servidor. </p>
-<p>Al declarar la clase y sus métodos como estáticos (<code>static</code>), las funciones se cargan en la memoria de la aplicación una sola vez cuando el sistema arranca. Esto acelera drásticamente los tiempos de respuesta.</p>
+<h2 id="2-una-decision-de-diseno-clases-estaticas">2. Una Decisión de Diseño: Clases Estáticas</h2>
+<p>Para los ejemplos de este capítulo se implementa el CRUD utilizando clases <code>static</code> en las capas de Datos y Negocio. Esta no es la única forma válida de hacerlo, pero resulta conveniente en sistemas donde las transacciones son directas y no requieren mantener datos persistentes en la memoria del usuario entre clics, es decir, en operaciones <em>stateless</em>.</p>
+<p>Instanciar la clase de acceso a datos con <code>new CapaDatos()</code> una y otra vez consume recursos innecesarios y sobrecarga el recolector de basura del servidor. Al declarar la clase y sus métodos como estáticos, las funciones se cargan en la memoria de la aplicación una sola vez cuando el sistema arranca, lo que acelera los tiempos de respuesta. En proyectos más grandes, sobre todo aquellos que usan inyección de dependencias, suele preferirse en su lugar una clase de instancia inyectada como repositorio; ambos enfoques son válidos, y la elección depende del tamaño y las necesidades del sistema.</p>
 <hr />
 <h2 id="3-implementacion-del-crud-tabla-customers">3. Implementación del CRUD (Tabla Customers)</h2>
-<p>La tabla <code>Customers</code> de Northwind utiliza un <code>string</code> de 5 caracteres como Llave Primaria (<code>CustomerID</code>), a diferencia de los clásicos enteros autonuméricos.</p>
+<p>La tabla <code>Customers</code> de Northwind utiliza un <code>string</code> de 5 caracteres como llave primaria (<code>CustomerID</code>), a diferencia de los clásicos enteros autonuméricos.</p>
 <h3 id="31-create-insertar">3.1. Create (Insertar)</h3>
-<p>Para insertar, creamos el objeto, lo añadimos al contexto con <code>.Add()</code> y guardamos los cambios. La clase estática maneja su propio ciclo de vida de conexión usando el bloque <code>using</code>.</p>
+<p>Para insertar, se crea el objeto, se añade al contexto con <code>.Add()</code> y se guardan los cambios. La clase estática maneja su propio ciclo de vida de conexión usando el bloque <code>using</code>.</p>
 <div class="highlight"><pre><span></span><code><span class="k">public</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">ClienteDatos</span>
 <span class="p">{</span>
 <span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">InsertarCliente</span><span class="p">(</span><span class="n">Customer</span><span class="w"> </span><span class="n">nuevoCliente</span><span class="p">)</span>
 <span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="c1">// El &#39;using&#39; asegura que la conexión a la BD se cierre y destruya al terminar</span>
+<span class="w">        </span><span class="c1">// El &#39;using&#39; asegura que la conexion a la BD se cierre y destruya al terminar</span>
 <span class="w">        </span><span class="k">using</span><span class="w"> </span><span class="p">(</span><span class="kt">var</span><span class="w"> </span><span class="n">_context</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">NorthwindContext</span><span class="p">())</span>
 <span class="w">        </span><span class="p">{</span>
 <span class="w">            </span><span class="n">_context</span><span class="p">.</span><span class="n">Customers</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="n">nuevoCliente</span><span class="p">);</span>
-<span class="w">            </span><span class="n">_context</span><span class="p">.</span><span class="n">SaveChanges</span><span class="p">();</span><span class="w"> </span><span class="c1">// Aquí se ejecuta el INSERT en SQL Server</span>
+<span class="w">            </span><span class="n">_context</span><span class="p">.</span><span class="n">SaveChanges</span><span class="p">();</span><span class="w"> </span><span class="c1">// Aqui se ejecuta el INSERT en SQL Server</span>
 <span class="w">        </span><span class="p">}</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
 <h3 id="32-read-leer-por-id">3.2. Read (Leer por ID)</h3>
-<p>Para buscar un registro específico, utilizamos el método LINQ <code>.FirstOrDefault()</code>.</p>
+<p>Para buscar un registro específico, se utiliza el método LINQ <code>.FirstOrDefault()</code>.</p>
 <div class="highlight"><pre><span></span><code><span class="k">public</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="n">Customer</span><span class="w"> </span><span class="nf">ObtenerClientePorId</span><span class="p">(</span><span class="kt">string</span><span class="w"> </span><span class="n">idCliente</span><span class="p">)</span>
 <span class="p">{</span>
 <span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="p">(</span><span class="kt">var</span><span class="w"> </span><span class="n">_context</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">NorthwindContext</span><span class="p">())</span>
@@ -782,18 +800,18 @@
 <span class="p">}</span>
 </code></pre></div>
 <h3 id="33-update-actualizar">3.3. Update (Actualizar)</h3>
-<p>Aprovechamos el rastreo de EF Core. Modificamos el objeto y le indicamos al contexto que su estado ha cambiado a "Modificado" usando <code>.Update()</code>.</p>
+<p>Aprovechando el rastreo de cambios de EF Core, se modifica el objeto y se le indica al contexto que su estado ha cambiado a "modificado" usando <code>.Update()</code>.</p>
 <div class="highlight"><pre><span></span><code><span class="k">public</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">ActualizarCliente</span><span class="p">(</span><span class="n">Customer</span><span class="w"> </span><span class="n">clienteModificado</span><span class="p">)</span>
 <span class="p">{</span>
 <span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="p">(</span><span class="kt">var</span><span class="w"> </span><span class="n">_context</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">NorthwindContext</span><span class="p">())</span>
 <span class="w">    </span><span class="p">{</span>
 <span class="w">        </span><span class="n">_context</span><span class="p">.</span><span class="n">Customers</span><span class="p">.</span><span class="n">Update</span><span class="p">(</span><span class="n">clienteModificado</span><span class="p">);</span>
-<span class="w">        </span><span class="n">_context</span><span class="p">.</span><span class="n">SaveChanges</span><span class="p">();</span><span class="w"> </span><span class="c1">// Aquí se ejecuta el UPDATE en SQL Server</span>
+<span class="w">        </span><span class="n">_context</span><span class="p">.</span><span class="n">SaveChanges</span><span class="p">();</span><span class="w"> </span><span class="c1">// Aqui se ejecuta el UPDATE en SQL Server</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
 <h3 id="34-delete-eliminar">3.4. Delete (Eliminar)</h3>
-<p>La lógica estricta de eliminación exige primero consultar si el registro existe en la base de datos. Si existe, se procede a removerlo.</p>
+<p>La lógica de eliminación exige primero consultar si el registro existe en la base de datos. Si existe, se procede a removerlo.</p>
 <div class="highlight"><pre><span></span><code><span class="k">public</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">EliminarCliente</span><span class="p">(</span><span class="kt">string</span><span class="w"> </span><span class="n">idCliente</span><span class="p">)</span>
 <span class="p">{</span>
 <span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="p">(</span><span class="kt">var</span><span class="w"> </span><span class="n">_context</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">NorthwindContext</span><span class="p">())</span>
@@ -803,14 +821,29 @@
 <span class="w">        </span><span class="c1">// 2. Validamos que exista</span>
 <span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">cliente</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="k">null</span><span class="p">)</span>
 <span class="w">        </span><span class="p">{</span>
-<span class="w">            </span><span class="n">_context</span><span class="p">.</span><span class="n">Customers</span><span class="p">.</span><span class="n">Remove</span><span class="p">(</span><span class="n">cliente</span><span class="p">);</span><span class="w"> </span><span class="c1">// 3. Lo marcamos para eliminación</span>
+<span class="w">            </span><span class="n">_context</span><span class="p">.</span><span class="n">Customers</span><span class="p">.</span><span class="n">Remove</span><span class="p">(</span><span class="n">cliente</span><span class="p">);</span><span class="w"> </span><span class="c1">// 3. Lo marcamos para eliminacion</span>
 <span class="w">            </span><span class="n">_context</span><span class="p">.</span><span class="n">SaveChanges</span><span class="p">();</span><span class="w">             </span><span class="c1">// 4. Se ejecuta el DELETE en SQL Server</span>
 <span class="w">        </span><span class="p">}</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
 <hr />
-<h2 id="4-ventajas-y-desventajas-del-crud-con-ef-core">4. Ventajas y Desventajas del CRUD con EF Core</h2>
+<h2 id="4-la-version-asincrona-savechangesasync">4. La Versión Asíncrona: SaveChangesAsync</h2>
+<p>Todos los ejemplos anteriores usan métodos síncronos: mientras <code>SaveChanges()</code> espera la respuesta de la base de datos, el hilo de ejecución que lo llamó queda bloqueado, sin poder hacer nada más. En una aplicación de escritorio pequeña esto rara vez se nota, pero en aplicaciones web que atienden a muchos usuarios simultáneamente, bloquear un hilo por cada operación de base de datos puede agotar los recursos del servidor.</p>
+<p>Por eso, EF Core ofrece una versión asíncrona de prácticamente todos sus métodos de consulta y guardado, identificable porque su nombre termina en <code>Async</code>: <code>ToListAsync()</code>, <code>FirstOrDefaultAsync()</code>, <code>SaveChangesAsync()</code>. Estas versiones, combinadas con las palabras clave <code>async</code> y <code>await</code> de C#, liberan el hilo mientras se espera la respuesta de la base de datos, permitiendo que el servidor atienda otras solicitudes en ese tiempo de espera.</p>
+<p>El método <code>InsertarCliente</code> de la sección 3.1, reescrito en su forma asíncrona, se vería así:</p>
+<div class="highlight"><pre><span></span><code><span class="k">public</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="k">async</span><span class="w"> </span><span class="n">Task</span><span class="w"> </span><span class="nf">InsertarClienteAsync</span><span class="p">(</span><span class="n">Customer</span><span class="w"> </span><span class="n">nuevoCliente</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="p">(</span><span class="kt">var</span><span class="w"> </span><span class="n">_context</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">NorthwindContext</span><span class="p">())</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="k">await</span><span class="w"> </span><span class="n">_context</span><span class="p">.</span><span class="n">Customers</span><span class="p">.</span><span class="n">AddAsync</span><span class="p">(</span><span class="n">nuevoCliente</span><span class="p">);</span>
+<span class="w">        </span><span class="k">await</span><span class="w"> </span><span class="n">_context</span><span class="p">.</span><span class="n">SaveChangesAsync</span><span class="p">();</span><span class="w"> </span><span class="c1">// El hilo queda libre mientras se espera la respuesta de la BD</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>La estructura del método es prácticamente idéntica a la versión síncrona; el cambio real está en tres lugares: el método ahora retorna <code>Task</code> en lugar de <code>void</code>, está marcado con la palabra clave <code>async</code>, y cada llamada a un método de EF Core lleva <code>await</code> delante. Esta es la convención que se recomienda seguir en proyectos nuevos, especialmente en aplicaciones web con ASP.NET, mientras que los ejemplos síncronos de la sección 3 siguen siendo perfectamente válidos para aplicaciones de escritorio o consola donde la concurrencia no es una preocupación central.</p>
+<hr />
+<h2 id="5-ventajas-y-desventajas-del-crud-con-ef-core">5. Ventajas y Desventajas del CRUD con EF Core</h2>
 <table>
 <thead>
 <tr>
@@ -821,16 +854,16 @@
 <tbody>
 <tr>
 <td style="text-align: left;"><strong>Ventajas</strong></td>
-<td style="text-align: left;"><strong>Prevención de Errores:</strong> Visual Studio revisa el código en tiempo de compilación. Si intentas asignar un texto a un campo numérico, el programa no compilará.<br><strong>Mantenibilidad:</strong> Evitas tener cadenas de texto SQL gigantes (Strings mágicos) regadas por todo el código, facilitando la lectura y las pruebas.</td>
+<td style="text-align: left;"><strong>Prevención de Errores:</strong> Visual Studio revisa el código en tiempo de compilación. Si se intenta asignar un texto a un campo numérico, el programa no compilará.<br><strong>Mantenibilidad:</strong> Se evita tener cadenas de texto SQL gigantes regadas por todo el código, facilitando la lectura y las pruebas.</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>Desventajas</strong></td>
-<td style="text-align: left;"><strong>Operaciones Masivas (Bulk):</strong> El <em>Change Tracking</em> es excelente para 1 o 100 registros. Pero si necesitas actualizar 100,000 clientes al mismo tiempo, el seguimiento colapsará la memoria RAM. Para esos casos, se prefiere usar sentencias SQL directas (Raw SQL) o librerías externas como <em>EF Core Bulk Extensions</em>.</td>
+<td style="text-align: left;"><strong>Operaciones Masivas (Bulk):</strong> El Change Tracking es excelente para uno o cien registros, pero si se necesita actualizar cien mil clientes al mismo tiempo, el seguimiento puede saturar la memoria RAM. Para esos casos, se prefiere usar sentencias SQL directas (Raw SQL) o librerías externas como EF Core Bulk Extensions.</td>
 </tr>
 </tbody>
 </table>
 <hr />
-<h2 id="5-referencias-formato-ieee">5. Referencias (Formato IEEE)</h2>
+<h2 id="6-referencias">6. Referencias</h2>
 <ul>
 <li>
 <p>[1] Microsoft, "Guardado de datos en Entity Framework Core," <em>Microsoft Learn</em>. [Online]. Disponible en: <a href="https://learn.microsoft.com/es-es/ef/core/saving/">https://learn.microsoft.com/es-es/ef/core/saving/</a>. [Accedido: 15-jun-2026].</p>
@@ -840,6 +873,9 @@
 </li>
 <li>
 <p>[3] Microsoft, "Clases estáticas y sus miembros (Guía de programación de C#)," <em>Microsoft Learn</em>. [Online]. Disponible en: <a href="https://learn.microsoft.com/es-es/dotnet/csharp/programming-guide/classes-and-structs/static-classes-and-static-class-members">https://learn.microsoft.com/es-es/dotnet/csharp/programming-guide/classes-and-structs/static-classes-and-static-class-members</a>. [Accedido: 15-jun-2026].</p>
+</li>
+<li>
+<p>[4] Microsoft, "Operaciones asíncronas de consultas y guardado," <em>Microsoft Learn</em>. [Online]. Disponible en: <a href="https://learn.microsoft.com/es-es/ef/core/miscellaneous/async">https://learn.microsoft.com/es-es/ef/core/miscellaneous/async</a>. [Accedido: 16-jun-2026].</p>
 </li>
 </ul>
 

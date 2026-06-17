@@ -411,6 +411,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#ejemplo-5-valores-extremos-por-grupo-min-y-max" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ejemplo 5: Valores Extremos por Grupo (Min y Max)
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -428,10 +439,21 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#4-referencias-formato-ieee" class="md-nav__link">
+  <a href="#4-distinct-eliminacion-de-duplicados" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4. Referencias (Formato IEEE)
+        4. Distinct: Eliminación de Duplicados
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-referencias" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Referencias
       
     </span>
   </a>
@@ -674,6 +696,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#ejemplo-5-valores-extremos-por-grupo-min-y-max" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ejemplo 5: Valores Extremos por Grupo (Min y Max)
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -691,10 +724,21 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#4-referencias-formato-ieee" class="md-nav__link">
+  <a href="#4-distinct-eliminacion-de-duplicados" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4. Referencias (Formato IEEE)
+        4. Distinct: Eliminación de Duplicados
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-referencias" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Referencias
       
     </span>
   </a>
@@ -720,21 +764,11 @@
 
 <h1 id="capitulo-3-funciones-de-agregado-y-agrupacion-en-linq">Capítulo 3: Funciones de Agregado y Agrupación en LINQ</h1>
 <h2 id="1-que-son-y-cual-es-la-logica-por-debajo">1. ¿Qué son y cuál es la lógica por debajo?</h2>
-<p>En el desarrollo de software empresarial, frecuentemente necesitamos obtener resúmenes estadísticos (totales, promedios, conteos). Las <strong>Funciones de Agregado</strong> de LINQ (<code>Count</code>, <code>Sum</code>, <code>Max</code>, <code>Min</code>, <code>Average</code>) nos permiten realizar estos cálculos matemáticos de forma nativa.</p>
-<p><strong>La Lógica Crítica de Rendimiento (¿Por qué se hace así?):</strong></p>
-<p>Si necesitas saber cuántos clientes compraron en Ecuador, la forma incorrecta sería traer toda la tabla a la memoria RAM de tu servidor y usar un bucle <code>foreach</code> para contarlos. La forma correcta usando LINQ to Entities es ejecutar la función directamente en la consulta.</p>
-<p>Al utilizar <code>_context.Clientes.Where(c =&gt; c.Pais == "Ecuador").Count();</code>, LINQ traduce el comando a un <code>SELECT COUNT(*)</code> de SQL. El cálculo pesado lo hace el motor de la base de datos (que está diseñado y optimizado para eso) y a tu memoria RAM solo viaja un número entero (ej. <code>50</code>). Esto salva al servidor de colapsar por saturación de memoria.</p>
+<p>En el desarrollo de software empresarial, es frecuente necesitar resúmenes estadísticos: totales, promedios, conteos. Las funciones de agregado de LINQ (<code>Count</code>, <code>Sum</code>, <code>Max</code>, <code>Min</code>, <code>Average</code>) permiten realizar estos cálculos matemáticos de forma nativa, sin tener que escribir bucles manuales para acumular resultados.</p>
+<p>Si se necesita saber cuántos clientes compraron en Ecuador, la forma incorrecta sería traer toda la tabla a la memoria RAM del servidor y usar un bucle <code>foreach</code> para contarlos uno por uno. La forma correcta, usando LINQ to Entities, es ejecutar la función directamente dentro de la consulta. Al escribir <code>_context.Clientes.Where(c =&gt; c.Pais == "Ecuador").Count();</code>, LINQ traduce el comando a un <code>SELECT COUNT(*)</code> de SQL. El cálculo pesado lo hace el motor de la base de datos, que está diseñado y optimizado para precisamente ese tipo de operación, y a la memoria RAM de la aplicación solo viaja un número entero, por ejemplo <code>50</code>. Esto evita que el servidor colapse por saturación de memoria cuando la tabla crece.</p>
 <hr />
 <h2 id="2-agrupacion-groupby-y-proyecciones-select">2. Agrupación (GroupBy) y Proyecciones (Select)</h2>
-<p>Profesionalmente, las funciones de agregado rara vez se usan solas; casi siempre van acompañadas de un <code>GroupBy</code> (Agrupación) y un <code>Select</code> (Proyección hacia un DTO).</p>
-<ul>
-<li>
-<p><strong>GroupBy:</strong> Toma una lista plana y la divide en subgrupos basados en una llave (ej. Agrupar todas las ventas <em>por País</em>).</p>
-</li>
-<li>
-<p><strong>Select (Proyección):</strong> Moldea el resultado final para que encaje perfectamente en una clase plana o DTO (Data Transfer Object), evitando enviar entidades gigantes a la Capa de Presentación.</p>
-</li>
-</ul>
+<p>Profesionalmente, las funciones de agregado rara vez se usan solas; casi siempre van acompañadas de un <code>GroupBy</code> (agrupación) y un <code>Select</code> (proyección hacia un DTO). El <code>GroupBy</code> toma una lista plana y la divide en subgrupos basados en una llave, por ejemplo agrupar todas las ventas por país. El <code>Select</code>, en este contexto, moldea el resultado final para que encaje exactamente en una clase plana o DTO (Data Transfer Object), evitando enviar entidades completas y pesadas a la Capa de Presentación.</p>
 <h3 id="ejemplo-1-conteo-y-agrupacion-count-y-groupby">Ejemplo 1: Conteo y Agrupación (Count y GroupBy)</h3>
 <p>Basado en el DTO <code>CantidadCategoria</code> de nuestro sistema Northwind, calculamos cuántas órdenes existen por cada categoría.</p>
 <blockquote>
@@ -746,8 +780,8 @@
 <span class="w">        </span><span class="p">.</span><span class="n">GroupBy</span><span class="p">(</span><span class="n">detalle</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">detalle</span><span class="p">.</span><span class="n">Product</span><span class="p">.</span><span class="n">Category</span><span class="p">.</span><span class="n">CategoryName</span><span class="p">)</span><span class="w"> </span>
 <span class="w">        </span><span class="p">.</span><span class="n">Select</span><span class="p">(</span><span class="n">grupo</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">CantidadCategoria</span><span class="w"> </span>
 <span class="w">        </span><span class="p">{</span>
-<span class="w">            </span><span class="n">NombreCategoria</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">grupo</span><span class="p">.</span><span class="n">Key</span><span class="p">,</span><span class="w">         </span><span class="c1">// .Key representa la llave de agrupación (El nombre de la categoría)</span>
-<span class="w">            </span><span class="n">NumeroOrdenes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">grupo</span><span class="p">.</span><span class="n">Count</span><span class="p">()</span><span class="w">        </span><span class="c1">// .Count() cuenta cuántos registros exactos hay en este grupo</span>
+<span class="w">            </span><span class="n">NombreCategoria</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">grupo</span><span class="p">.</span><span class="n">Key</span><span class="p">,</span><span class="w">         </span><span class="c1">// .Key representa la llave de agrupacion</span>
+<span class="w">            </span><span class="n">NumeroOrdenes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">grupo</span><span class="p">.</span><span class="n">Count</span><span class="p">()</span><span class="w">        </span><span class="c1">// .Count() cuenta cuantos registros hay en este grupo</span>
 <span class="w">        </span><span class="p">})</span>
 <span class="w">        </span><span class="p">.</span><span class="n">OrderByDescending</span><span class="p">(</span><span class="n">c</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">c</span><span class="p">.</span><span class="n">NumeroOrdenes</span><span class="p">)</span><span class="w"> </span>
 <span class="w">        </span><span class="p">.</span><span class="n">ToList</span><span class="p">();</span>
@@ -766,17 +800,18 @@
 <span class="w">        </span><span class="p">.</span><span class="n">Select</span><span class="p">(</span><span class="n">grupo</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">VentaPais</span>
 <span class="w">        </span><span class="p">{</span>
 <span class="w">            </span><span class="n">Pais</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">grupo</span><span class="p">.</span><span class="n">Key</span><span class="p">,</span>
-<span class="w">            </span><span class="c1">// Multiplicamos precio por cantidad y luego sumamos el total de todo el grupo</span>
+<span class="w">            </span><span class="c1">// Multiplicamos precio por cantidad y sumamos el total de todo el grupo</span>
 <span class="w">            </span><span class="n">TotalVentas</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">grupo</span><span class="p">.</span><span class="n">Sum</span><span class="p">(</span><span class="n">o</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">o</span><span class="p">.</span><span class="n">OrderDetails</span><span class="p">.</span><span class="n">Sum</span><span class="p">(</span><span class="n">od</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">od</span><span class="p">.</span><span class="n">UnitPrice</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">od</span><span class="p">.</span><span class="n">Quantity</span><span class="p">)),</span>
-<span class="w">            </span><span class="c1">// Contamos los clientes únicos filtrando duplicados con Distinct</span>
+<span class="w">            </span><span class="c1">// Contamos los clientes unicos filtrando duplicados con Distinct</span>
 <span class="w">            </span><span class="n">NumeroClientes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">grupo</span><span class="p">.</span><span class="n">Select</span><span class="p">(</span><span class="n">o</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">o</span><span class="p">.</span><span class="n">CustomerID</span><span class="p">).</span><span class="n">Distinct</span><span class="p">().</span><span class="n">Count</span><span class="p">()</span><span class="w"> </span>
 <span class="w">        </span><span class="p">})</span>
 <span class="w">        </span><span class="p">.</span><span class="n">ToList</span><span class="p">();</span>
 <span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">reporte</span><span class="p">;</span>
 <span class="p">}</span>
 </code></pre></div>
+<p>Nótese que esta consulta ya usa <code>Distinct()</code> de paso, para contar cuántos clientes únicos hay detrás de un grupo de órdenes. Volveremos sobre este operador con más detalle en la sección 4 de este capítulo, porque conviene entender exactamente qué problema resuelve.</p>
 <h3 id="ejemplo-3-maximos-y-filtrados-de-alto-nivel-orderbydescending-y-firstordefault">Ejemplo 3: Máximos y Filtrados de Alto Nivel (OrderByDescending y FirstOrDefault)</h3>
-<p>Basado en el DTO <code>MejorEmpleadoTrimestre</code>, este es el estándar para obtener el "Top 1" de un cálculo complejo.</p>
+<p>Basado en el DTO <code>MejorEmpleadoTrimestre</code>, este es el patrón estándar para obtener el "Top 1" de un cálculo complejo.</p>
 <blockquote>
 <p><strong>Referencia:</strong> Proyecto <code>Northwind_Logica</code>, archivo <code>MejorEmpleadoTrimestre_Logica.cs</code>.</p>
 </blockquote>
@@ -789,12 +824,11 @@
 <span class="w">            </span><span class="n">NombreEmpleado</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">grupo</span><span class="p">.</span><span class="n">Key</span><span class="p">,</span>
 <span class="w">            </span><span class="n">MontoTotalOrden</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">grupo</span><span class="p">.</span><span class="n">Sum</span><span class="p">(</span><span class="n">o</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">o</span><span class="p">.</span><span class="n">OrderDetails</span><span class="p">.</span><span class="n">Sum</span><span class="p">(</span><span class="n">od</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">od</span><span class="p">.</span><span class="n">UnitPrice</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">od</span><span class="p">.</span><span class="n">Quantity</span><span class="p">))</span>
 <span class="w">        </span><span class="p">})</span>
-<span class="w">        </span><span class="p">.</span><span class="n">OrderByDescending</span><span class="p">(</span><span class="n">empleado</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">empleado</span><span class="p">.</span><span class="n">MontoTotalOrden</span><span class="p">)</span><span class="w"> </span><span class="c1">// Posiciona al que vendió más en la cima</span>
-<span class="w">        </span><span class="p">.</span><span class="n">FirstOrDefault</span><span class="p">();</span><span class="w"> </span><span class="c1">// Retorna estrictamente el primer elemento de la lista (El Top 1)</span>
+<span class="w">        </span><span class="p">.</span><span class="n">OrderByDescending</span><span class="p">(</span><span class="n">empleado</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">empleado</span><span class="p">.</span><span class="n">MontoTotalOrden</span><span class="p">)</span><span class="w"> </span><span class="c1">// Posiciona al que vendio mas en la cima</span>
+<span class="w">        </span><span class="p">.</span><span class="n">FirstOrDefault</span><span class="p">();</span><span class="w"> </span><span class="c1">// Retorna estrictamente el primer elemento de la lista</span>
 <span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">mejorEmpleado</span><span class="p">;</span>
 <span class="p">}</span>
 </code></pre></div>
-<hr />
 <h3 id="ejemplo-4-promedio-average-y-ordenamiento-orderby">Ejemplo 4: Promedio (Average) y Ordenamiento (OrderBy)</h3>
 <p>Para obtener el precio promedio de los productos por categoría y ordenarlos de mayor a menor.</p>
 <div class="highlight"><pre><span></span><code><span class="k">public</span><span class="w"> </span><span class="n">List</span><span class="o">&lt;</span><span class="kt">dynamic</span><span class="o">&gt;</span><span class="w"> </span><span class="n">ObtenerPreciosPromedio</span><span class="p">()</span>
@@ -812,6 +846,27 @@
 <span class="w">    </span><span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
+<h3 id="ejemplo-5-valores-extremos-por-grupo-min-y-max">Ejemplo 5: Valores Extremos por Grupo (Min y Max)</h3>
+<p>Hasta ahora se han usado <code>Count</code>, <code>Sum</code> y <code>Average</code>, pero quedan dos funciones de agregado igualmente importantes: <code>Min()</code> y <code>Max()</code>. Ambas devuelven, respectivamente, el valor más pequeño o más grande dentro de un grupo, y son especialmente útiles para detectar casos extremos: el producto más barato, el empleado con menos ventas, el pedido más antiguo.</p>
+<blockquote>
+<p><strong>Referencia:</strong> Proyecto <code>Northwind_Logica</code>, archivo <code>RangoPrecioCategoria_Logica.cs</code>.</p>
+</blockquote>
+<div class="highlight"><pre><span></span><code><span class="k">public</span><span class="w"> </span><span class="n">List</span><span class="o">&lt;</span><span class="n">RangoPrecioCategoria</span><span class="o">&gt;</span><span class="w"> </span><span class="n">ObtenerRangoDePreciosPorCategoria</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="kt">var</span><span class="w"> </span><span class="n">rangos</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_context</span><span class="p">.</span><span class="n">Products</span>
+<span class="w">        </span><span class="p">.</span><span class="n">GroupBy</span><span class="p">(</span><span class="n">p</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">Category</span><span class="p">.</span><span class="n">CategoryName</span><span class="p">)</span>
+<span class="w">        </span><span class="p">.</span><span class="n">Select</span><span class="p">(</span><span class="n">grupo</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">RangoPrecioCategoria</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="n">NombreCategoria</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">grupo</span><span class="p">.</span><span class="n">Key</span><span class="p">,</span>
+<span class="w">            </span><span class="n">PrecioMinimo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">grupo</span><span class="p">.</span><span class="n">Min</span><span class="p">(</span><span class="n">p</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">UnitPrice</span><span class="p">),</span><span class="w"> </span><span class="c1">// El producto mas barato del grupo</span>
+<span class="w">            </span><span class="n">PrecioMaximo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">grupo</span><span class="p">.</span><span class="n">Max</span><span class="p">(</span><span class="n">p</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">UnitPrice</span><span class="p">)</span><span class="w">  </span><span class="c1">// El producto mas caro del grupo</span>
+<span class="w">        </span><span class="p">})</span>
+<span class="w">        </span><span class="p">.</span><span class="n">ToList</span><span class="p">();</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">rangos</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>A diferencia de <code>Sum</code> o <code>Average</code>, que recorren todos los elementos del grupo para acumular un resultado, <code>Min</code> y <code>Max</code> solo necesitan comparar valores entre sí. En SQL Server esto se traduce directamente a las funciones <code>MIN()</code> y <code>MAX()</code>, que suelen aprovechar los índices de la tabla para resolver la consulta sin necesidad de leer cada fila por separado.</p>
+<hr />
 <h2 id="3-ventajas-y-desventajas-del-procesamiento-de-agregados">3. Ventajas y Desventajas del Procesamiento de Agregados</h2>
 <table>
 <thead>
@@ -832,7 +887,25 @@
 </tbody>
 </table>
 <hr />
-<h2 id="4-referencias-formato-ieee">4. Referencias (Formato IEEE)</h2>
+<h2 id="4-distinct-eliminacion-de-duplicados">4. Distinct: Eliminación de Duplicados</h2>
+<p>Aunque suele aparecer en la misma conversación que las funciones de agregado, <code>Distinct()</code> no es técnicamente una de ellas: no calcula un total ni un promedio, sino que elimina los valores repetidos de una colección. Se incluye en este capítulo porque casi siempre se combina con <code>Count()</code> para responder preguntas del tipo "¿cuántos valores diferentes hay aquí?", como ya se vio de paso en el Ejemplo 2.</p>
+<p>La forma más simple de usarlo es sobre una lista de valores simples, por ejemplo para saber en qué países tiene clientes Northwind, sin que un mismo país aparezca repetido por cada cliente que vive ahí.</p>
+<blockquote>
+<p><strong>Referencia:</strong> Proyecto <code>Northwind_Logica</code>, archivo <code>PaisesCliente_Logica.cs</code>.</p>
+</blockquote>
+<div class="highlight"><pre><span></span><code><span class="k">public</span><span class="w"> </span><span class="n">List</span><span class="o">&lt;</span><span class="kt">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">ObtenerPaisesConClientes</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="kt">var</span><span class="w"> </span><span class="n">paises</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_context</span><span class="p">.</span><span class="n">Customers</span>
+<span class="w">        </span><span class="p">.</span><span class="n">Select</span><span class="p">(</span><span class="n">c</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">c</span><span class="p">.</span><span class="n">Country</span><span class="p">)</span><span class="w">   </span><span class="c1">// Primero proyectamos solo el campo Pais</span>
+<span class="w">        </span><span class="p">.</span><span class="n">Distinct</span><span class="p">()</span><span class="w">                </span><span class="c1">// Luego eliminamos los duplicados</span>
+<span class="w">        </span><span class="p">.</span><span class="n">OrderBy</span><span class="p">(</span><span class="n">p</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">p</span><span class="p">)</span>
+<span class="w">        </span><span class="p">.</span><span class="n">ToList</span><span class="p">();</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">paises</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>El orden de las operaciones importa: si se aplicara <code>Distinct()</code> antes del <code>Select()</code>, LINQ compararía objetos <code>Customer</code> completos (que casi nunca son idénticos entre sí, porque cada cliente tiene un ID distinto), en lugar de comparar solamente el texto del país. Proyectar primero con <code>Select()</code> y aplicar <code>Distinct()</code> después es lo que permite que la comparación se haga sobre el valor que realmente interesa.</p>
+<hr />
+<h2 id="5-referencias">5. Referencias</h2>
 <ul>
 <li>
 <p>[1] Microsoft, "Agrupación de datos en LINQ," <em>Microsoft Learn</em>. [Online]. Disponible en: <a href="https://learn.microsoft.com/es-es/dotnet/csharp/linq/group-query-results">https://learn.microsoft.com/es-es/dotnet/csharp/linq/group-query-results</a>. [Accedido: 15-jun-2026].</p>
@@ -842,6 +915,9 @@
 </li>
 <li>
 <p>[3] Microsoft, "Base de datos de ejemplo Northwind," <em>GitHub Sql Server Samples</em>. [Online]. Disponible en: <a href="https://github.com/microsoft/sql-server-samples/tree/master/samples/databases/northwind-pubs">https://github.com/microsoft/sql-server-samples/tree/master/samples/databases/northwind-pubs</a>. [Accedido: 15-jun-2026].</p>
+</li>
+<li>
+<p>[4] Microsoft, "Set operations (C#)," <em>Microsoft Learn</em>. [Online]. Disponible en: <a href="https://learn.microsoft.com/es-es/dotnet/csharp/programming-guide/concepts/linq/set-operations">https://learn.microsoft.com/es-es/dotnet/csharp/programming-guide/concepts/linq/set-operations</a>. [Accedido: 16-jun-2026].</p>
 </li>
 </ul>
 
