@@ -2,23 +2,15 @@
 
 ## 1. ¿Qué son y cuál es la lógica por debajo?
 
-En el desarrollo de software empresarial, frecuentemente necesitamos obtener resúmenes estadísticos (totales, promedios, conteos). Las **Funciones de Agregado** de LINQ (`Count`, `Sum`, `Max`, `Min`, `Average`) nos permiten realizar estos cálculos matemáticos de forma nativa.
+En el desarrollo de software empresarial, es frecuente necesitar resúmenes estadísticos: totales, promedios, conteos. Las funciones de agregado de LINQ (`Count`, `Sum`, `Max`, `Min`, `Average`) permiten realizar estos cálculos matemáticos de forma nativa, sin tener que escribir bucles manuales para acumular resultados.
 
-**La Lógica Crítica de Rendimiento (¿Por qué se hace así?):**
-
-Si necesitas saber cuántos clientes compraron en Ecuador, la forma incorrecta sería traer toda la tabla a la memoria RAM de tu servidor y usar un bucle `foreach` para contarlos. La forma correcta usando LINQ to Entities es ejecutar la función directamente en la consulta.
-
-Al utilizar `_context.Clientes.Where(c => c.Pais == "Ecuador").Count();`, LINQ traduce el comando a un `SELECT COUNT(*)` de SQL. El cálculo pesado lo hace el motor de la base de datos (que está diseñado y optimizado para eso) y a tu memoria RAM solo viaja un número entero (ej. `50`). Esto salva al servidor de colapsar por saturación de memoria.
+Si se necesita saber cuántos clientes compraron en Ecuador, la forma incorrecta sería traer toda la tabla a la memoria RAM del servidor y usar un bucle `foreach` para contarlos uno por uno. La forma correcta, usando LINQ to Entities, es ejecutar la función directamente dentro de la consulta. Al escribir `_context.Clientes.Where(c => c.Pais == "Ecuador").Count();`, LINQ traduce el comando a un `SELECT COUNT(*)` de SQL. El cálculo pesado lo hace el motor de la base de datos, que está diseñado y optimizado para precisamente ese tipo de operación, y a la memoria RAM de la aplicación solo viaja un número entero, por ejemplo `50`. Esto evita que el servidor colapse por saturación de memoria cuando la tabla crece.
 
 ---
 
 ## 2. Agrupación (GroupBy) y Proyecciones (Select)
 
-Profesionalmente, las funciones de agregado rara vez se usan solas; casi siempre van acompañadas de un `GroupBy` (Agrupación) y un `Select` (Proyección hacia un DTO).
-
-* **GroupBy:** Toma una lista plana y la divide en subgrupos basados en una llave (ej. Agrupar todas las ventas *por País*).
-
-* **Select (Proyección):** Moldea el resultado final para que encaje perfectamente en una clase plana o DTO (Data Transfer Object), evitando enviar entidades gigantes a la Capa de Presentación.
+Profesionalmente, las funciones de agregado rara vez se usan solas; casi siempre van acompañadas de un `GroupBy` (agrupación) y un `Select` (proyección hacia un DTO). El `GroupBy` toma una lista plana y la divide en subgrupos basados en una llave, por ejemplo agrupar todas las ventas por país. El `Select`, en este contexto, moldea el resultado final para que encaje exactamente en una clase plana o DTO (Data Transfer Object), evitando enviar entidades completas y pesadas a la Capa de Presentación.
 
 ### Ejemplo 1: Conteo y Agrupación (Count y GroupBy)
 
@@ -33,8 +25,8 @@ public List<CantidadCategoria> ObtenerOrdenesPorCategoria()
         .GroupBy(detalle => detalle.Product.Category.CategoryName) 
         .Select(grupo => new CantidadCategoria 
         {
-            NombreCategoria = grupo.Key,         // .Key representa la llave de agrupación (El nombre de la categoría)
-            NumeroOrdenes = grupo.Count()        // .Count() cuenta cuántos registros exactos hay en este grupo
+            NombreCategoria = grupo.Key,         // .Key representa la llave de agrupacion
+            NumeroOrdenes = grupo.Count()        // .Count() cuenta cuantos registros hay en este grupo
         })
         .OrderByDescending(c => c.NumeroOrdenes) 
         .ToList();
@@ -56,9 +48,9 @@ public List<VentaPais> ObtenerReporteVentasPorPais()
         .Select(grupo => new VentaPais
         {
             Pais = grupo.Key,
-            // Multiplicamos precio por cantidad y luego sumamos el total de todo el grupo
+            // Multiplicamos precio por cantidad y sumamos el total de todo el grupo
             TotalVentas = grupo.Sum(o => o.OrderDetails.Sum(od => od.UnitPrice * od.Quantity)),
-            // Contamos los clientes únicos filtrando duplicados con Distinct
+            // Contamos los clientes unicos filtrando duplicados con Distinct
             NumeroClientes = grupo.Select(o => o.CustomerID).Distinct().Count() 
         })
         .ToList();
@@ -66,9 +58,11 @@ public List<VentaPais> ObtenerReporteVentasPorPais()
 }
 ```
 
+Nótese que esta consulta ya usa `Distinct()` de paso, para contar cuántos clientes únicos hay detrás de un grupo de órdenes. Volveremos sobre este operador con más detalle en la sección 4 de este capítulo, porque conviene entender exactamente qué problema resuelve.
+
 ### Ejemplo 3: Máximos y Filtrados de Alto Nivel (OrderByDescending y FirstOrDefault)
 
-Basado en el DTO `MejorEmpleadoTrimestre`, este es el estándar para obtener el "Top 1" de un cálculo complejo.
+Basado en el DTO `MejorEmpleadoTrimestre`, este es el patrón estándar para obtener el "Top 1" de un cálculo complejo.
 
 > **Referencia:** Proyecto `Northwind_Logica`, archivo `MejorEmpleadoTrimestre_Logica.cs`.
 
@@ -82,13 +76,11 @@ public MejorEmpleadoTrimestre ObtenerMejorEmpleado()
             NombreEmpleado = grupo.Key,
             MontoTotalOrden = grupo.Sum(o => o.OrderDetails.Sum(od => od.UnitPrice * od.Quantity))
         })
-        .OrderByDescending(empleado => empleado.MontoTotalOrden) // Posiciona al que vendió más en la cima
-        .FirstOrDefault(); // Retorna estrictamente el primer elemento de la lista (El Top 1)
+        .OrderByDescending(empleado => empleado.MontoTotalOrden) // Posiciona al que vendio mas en la cima
+        .FirstOrDefault(); // Retorna estrictamente el primer elemento de la lista
     return mejorEmpleado;
 }
 ```
-
----
 
 ### Ejemplo 4: Promedio (Average) y Ordenamiento (OrderBy)
 
@@ -111,6 +103,32 @@ public List<dynamic> ObtenerPreciosPromedio()
 }
 ```
 
+### Ejemplo 5: Valores Extremos por Grupo (Min y Max)
+
+Hasta ahora se han usado `Count`, `Sum` y `Average`, pero quedan dos funciones de agregado igualmente importantes: `Min()` y `Max()`. Ambas devuelven, respectivamente, el valor más pequeño o más grande dentro de un grupo, y son especialmente útiles para detectar casos extremos: el producto más barato, el empleado con menos ventas, el pedido más antiguo.
+
+> **Referencia:** Proyecto `Northwind_Logica`, archivo `RangoPrecioCategoria_Logica.cs`.
+
+```csharp
+public List<RangoPrecioCategoria> ObtenerRangoDePreciosPorCategoria()
+{
+    var rangos = _context.Products
+        .GroupBy(p => p.Category.CategoryName)
+        .Select(grupo => new RangoPrecioCategoria
+        {
+            NombreCategoria = grupo.Key,
+            PrecioMinimo = grupo.Min(p => p.UnitPrice), // El producto mas barato del grupo
+            PrecioMaximo = grupo.Max(p => p.UnitPrice)  // El producto mas caro del grupo
+        })
+        .ToList();
+    return rangos;
+}
+```
+
+A diferencia de `Sum` o `Average`, que recorren todos los elementos del grupo para acumular un resultado, `Min` y `Max` solo necesitan comparar valores entre sí. En SQL Server esto se traduce directamente a las funciones `MIN()` y `MAX()`, que suelen aprovechar los índices de la tabla para resolver la consulta sin necesidad de leer cada fila por separado.
+
+---
+
 ## 3. Ventajas y Desventajas del Procesamiento de Agregados
 
 | Aspecto | Evaluación Técnica |
@@ -120,10 +138,36 @@ public List<dynamic> ObtenerPreciosPromedio()
 
 ---
 
-## 4. Referencias (Formato IEEE)
+## 4. Distinct: Eliminación de Duplicados
+
+Aunque suele aparecer en la misma conversación que las funciones de agregado, `Distinct()` no es técnicamente una de ellas: no calcula un total ni un promedio, sino que elimina los valores repetidos de una colección. Se incluye en este capítulo porque casi siempre se combina con `Count()` para responder preguntas del tipo "¿cuántos valores diferentes hay aquí?", como ya se vio de paso en el Ejemplo 2.
+
+La forma más simple de usarlo es sobre una lista de valores simples, por ejemplo para saber en qué países tiene clientes Northwind, sin que un mismo país aparezca repetido por cada cliente que vive ahí.
+
+> **Referencia:** Proyecto `Northwind_Logica`, archivo `PaisesCliente_Logica.cs`.
+
+```csharp
+public List<string> ObtenerPaisesConClientes()
+{
+    var paises = _context.Customers
+        .Select(c => c.Country)   // Primero proyectamos solo el campo Pais
+        .Distinct()                // Luego eliminamos los duplicados
+        .OrderBy(p => p)
+        .ToList();
+    return paises;
+}
+```
+
+El orden de las operaciones importa: si se aplicara `Distinct()` antes del `Select()`, LINQ compararía objetos `Customer` completos (que casi nunca son idénticos entre sí, porque cada cliente tiene un ID distinto), en lugar de comparar solamente el texto del país. Proyectar primero con `Select()` y aplicar `Distinct()` después es lo que permite que la comparación se haga sobre el valor que realmente interesa.
+
+---
+
+## 5. Referencias
 
 * [1] Microsoft, "Agrupación de datos en LINQ," *Microsoft Learn*. [Online]. Disponible en: [https://learn.microsoft.com/es-es/dotnet/csharp/linq/group-query-results](https://learn.microsoft.com/es-es/dotnet/csharp/linq/group-query-results). [Accedido: 15-jun-2026].
 
 * [2] Microsoft, "Funciones de agregado (Transact-SQL)," *SQL Server Documentation*. [Online]. Disponible en: [https://learn.microsoft.com/es-es/sql/t-sql/functions/aggregate-functions-transact-sql](https://learn.microsoft.com/es-es/sql/t-sql/functions/aggregate-functions-transact-sql). [Accedido: 15-jun-2026].
 
 * [3] Microsoft, "Base de datos de ejemplo Northwind," *GitHub Sql Server Samples*. [Online]. Disponible en: [https://github.com/microsoft/sql-server-samples/tree/master/samples/databases/northwind-pubs](https://github.com/microsoft/sql-server-samples/tree/master/samples/databases/northwind-pubs). [Accedido: 15-jun-2026].
+
+* [4] Microsoft, "Set operations (C#)," *Microsoft Learn*. [Online]. Disponible en: [https://learn.microsoft.com/es-es/dotnet/csharp/programming-guide/concepts/linq/set-operations](https://learn.microsoft.com/es-es/dotnet/csharp/programming-guide/concepts/linq/set-operations). [Accedido: 16-jun-2026].
