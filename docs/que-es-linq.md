@@ -9,21 +9,18 @@ El salto que nos interesa ocurrió en 2007, con el lanzamiento de C# 3.0 junto a
 Esa propuesta fue tomando forma hasta convertirse en LINQ, y se lanzó junto con un paquete de características del lenguaje diseñadas específicamente para hacerla posible: expresiones lambda, el operador `var` para inferencia de tipos, métodos de extensión, tipos anónimos y árboles de expresión. Ninguna de estas piezas existía antes de 2007 de forma aislada; se construyeron como un conjunto para que LINQ pudiera funcionar.
 
 ```mermaid
-graph LR
+graph TD
     A[1996: Hejlsberg<br/>llega a Microsoft] --> B[2002: Lanzamiento de<br/>.NET 1.0 y C# 1.0]
-    B --> C[Hejlsberg y Golde explorando<br/>consultas integradas al lenguaje]
+    B --> C[Hejlsberg y Golde<br/>explorando consultas<br/>integradas al lenguaje]
     C --> D[2007: C# 3.0 y .NET 3.5<br/>Lanzamiento oficial de LINQ]
-    D --> E[Actualidad: LINQ sigue siendo<br/>el estandar de consultas en C#]
-
-    classDef darkText color:#000;
-    class A,B,C,D,E darkText;
-
-    style A fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
-    style B fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
-    style C fill:#fff3e0,stroke:#f57c00,stroke-width:2px
-    style D fill:#e8f5e9,stroke:#388e3c,stroke-width:2px
-    style E fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
-
+    D --> E[Actualidad: LINQ sigue<br/>siendo el estandar<br/>de consultas en C#]
+ 
+    style A fill:#e1f5fe,stroke:#0288d1,stroke-width:2px,color:#000
+    style B fill:#e1f5fe,stroke:#0288d1,stroke-width:2px,color:#000
+    style C fill:#fff3e0,stroke:#f57c00,stroke-width:2px,color:#000
+    style D fill:#e8f5e9,stroke:#388e3c,stroke-width:2px,color:#000
+    style E fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px,color:#000
+ 
     linkStyle default color:#9ca3af
 ```
 
@@ -74,17 +71,14 @@ graph TD
     C --> D[(La base de datos filtra<br/>y devuelve solo el resultado)]
     B -->|IEnumerable, ya esta<br/>en memoria| E[Se ejecuta en C#]
     E --> F[La aplicacion recorre<br/>los elementos uno por uno]
-
-    classDef darkText color:#000;
-    class A,B,C,D,E,F darkText;
-
-    style A fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
-    style B fill:#fff3e0,stroke:#f57c00,stroke-width:2px
-    style C fill:#e8f5e9,stroke:#388e3c,stroke-width:2px
-    style D fill:#e8f5e9,stroke:#388e3c,stroke-width:2px
-    style E fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
-    style F fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
-
+ 
+    style A fill:#e1f5fe,stroke:#0288d1,stroke-width:2px,color:#000
+    style B fill:#fff3e0,stroke:#f57c00,stroke-width:2px,color:#000
+    style C fill:#e8f5e9,stroke:#388e3c,stroke-width:2px,color:#000
+    style D fill:#e8f5e9,stroke:#388e3c,stroke-width:2px,color:#000
+    style E fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px,color:#000
+    style F fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px,color:#000
+ 
     linkStyle default color:#9ca3af
 ```
 
@@ -129,7 +123,7 @@ graph TD
     C --> F[Listas y arrays]
     D --> G[(SQL Server / PostgreSQL)]
     E --> H[Archivos de configuracion]
-
+ 
     style A fill:#e1f5fe,stroke:#0288d1,stroke-width:2px,color:#000
     style B fill:#fff3e0,stroke:#f57c00,stroke-width:2px,color:#000
     style C fill:#e8f5e9,stroke:#388e3c,stroke-width:2px,color:#000
@@ -138,7 +132,7 @@ graph TD
     style F fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px,color:#000
     style G fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px,color:#000
     style H fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px,color:#000
-
+ 
     linkStyle default color:#9ca3af
 ```
 
