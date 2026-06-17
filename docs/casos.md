@@ -937,7 +937,133 @@ public static string InsertarConValidacion(LibroEntidad libro)
 
 ---
 
-## 7. Referencias (Formato IEEE)
+## 7. Casos de Estudio en Proyectos Open Source
+
+A diferencia de los casos anteriores (proyectos propios del curso), esta sección analiza cómo se usa LINQ en dos proyectos públicos y oficiales de Microsoft, ampliamente reconocidos en la industria. El objetivo es contrastar las técnicas vistas en clase con su aplicación en software de referencia a gran escala.
+
+> **Nota de uso:** Los fragmentos mostrados son extractos breves con fines exclusivamente educativos. El código completo, con su licencia correspondiente, puede consultarse en los enlaces indicados.
+
+---
+
+### 7.1. eShopOnWeb (Microsoft) — Patrón Repositorio Genérico con LINQ
+
+**Contexto:** `eShopOnWeb` es una aplicación de referencia oficial de Microsoft que demuestra arquitectura en capas para una tienda en línea, usando ASP.NET Core y Entity Framework Core.
+
+> **Referencia:** Repositorio `dotnet-architecture/eShopOnWeb`, archivo [`src/Infrastructure/Data/EfRepository.cs`](https://github.com/dotnet-architecture/eShopOnWeb/blob/main/src/Infrastructure/Data/EfRepository.cs). Licencia MIT.
+
+El repositorio implementa una clase genérica `EfRepository<T>` que centraliza el acceso a datos para cualquier entidad del dominio, similar al patrón que usaron en `Capa.Datos` con `EstudianteRepository` o `TransaccionRepository`, pero generalizado para reutilizarse con cualquier tabla:
+
+```csharp
+public class EfRepository<T> : RepositoryBase<T>, IReadRepository<T>, IRepository<T>
+    where T : class, IAggregateRoot
+{
+    protected readonly CatalogContext _dbContext;
+
+    public EfRepository(CatalogContext dbContext)
+    {
+        _dbContext = dbContext;
+    }
+
+    public virtual async Task<T> GetByIdAsync(int id, CancellationToken cancellationToken = default)
+    {
+        var keyValues = new object[] { id };
+        return await _dbContext.Set<T>().FindAsync(keyValues, cancellationToken);
+    }
+}
+```
+
+**Análisis:** En lugar de escribir un repositorio distinto para cada entidad (`ProductoDatos`, `LibroDatos`, `PacienteDatos`, como en los casos anteriores), `eShopOnWeb` usa genéricos de C# (`<T>`) para crear **un solo repositorio que sirve para todas las tablas**, siempre que la entidad implemente la interfaz `IAggregateRoot`. Esto reduce la duplicación de código, pero requiere un nivel de abstracción más avanzado (genéricos, restricciones de tipo `where T : class`).
+
+El proyecto también usa el **Patrón Specification**, donde cada consulta LINQ compleja se encapsula en su propia clase. Por ejemplo, el servicio de catálogo construye los filtros así:
+
+> **Referencia:** Archivo [`src/Web/Services/CatalogViewModelService.cs`](https://github.com/dotnet-architecture/eShopOnWeb/blob/main/src/Web/Services/CatalogViewModelService.cs).
+
+```csharp
+var filterSpecification = new CatalogFilterSpecification(brandId, typeId);
+var filterPaginatedSpecification =
+    new CatalogFilterPaginatedSpecification(itemsPage * pageIndex, itemsPage, brandId, typeId);
+
+var itemsOnPage = await _itemRepository.ListAsync(filterPaginatedSpecification);
+var totalItems = await _itemRepository.CountAsync(filterSpecification);
+```
+
+**Análisis:** En lugar de escribir el `.Where()` y `.Skip().Take()` directamente en el servicio (como se hizo en el Capítulo 6 con `Skip`/`Take`), aquí esos filtros se "empaquetan" dentro de una clase `Specification`. Esto separa completamente la lógica del filtro de LINQ de la lógica del servicio, facilitando reutilizar el mismo filtro en varios lugares del sistema sin repetir código.
+
+| Técnica | Visto en este manual (Cap. 6) | Visto en eShopOnWeb |
+| :--- | :--- | :--- |
+| Paginación | `.Skip()` y `.Take()` escritos directo en el método | Encapsulados en una clase `CatalogFilterPaginatedSpecification` |
+| Repositorio | Una clase por entidad (`ProductoDatos`, `LibroDatos`) | Una clase genérica `EfRepository<T>` para todas las entidades |
+| Filtros | `.Where()` directo en el método de la capa de Datos | Encapsulados en clases `Specification` reutilizables |
+
+---
+
+### 7.2. Contoso University (Microsoft Learn) — Repositorio Genérico con Filtro, Orden e Include Dinámicos
+
+**Contexto:** `Contoso University` es el proyecto de ejemplo oficial usado en la documentación de Microsoft Learn para enseñar el patrón Repositorio y Unit of Work en aplicaciones ASP.NET MVC con Entity Framework.
+
+> **Referencia:** Microsoft Learn, ["Implementing the Repository and Unit of Work Patterns in an ASP.NET MVC Application"](https://learn.microsoft.com/en-us/aspnet/mvc/overview/older-versions/getting-started-with-ef-5-using-mvc-4/implementing-the-repository-and-unit-of-work-patterns-in-an-asp-net-mvc-application), archivo `GenericRepository.cs`.
+
+```csharp
+public class GenericRepository<TEntity> where TEntity : class
+{
+    internal SchoolContext context;
+    internal DbSet<TEntity> dbSet;
+
+    public GenericRepository(SchoolContext context)
+    {
+        this.context = context;
+        this.dbSet = context.Set<TEntity>();
+    }
+
+    public virtual IEnumerable<TEntity> Get(
+        Expression<Func<TEntity, bool>> filter = null,
+        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
+        string includeProperties = "")
+    {
+        IQueryable<TEntity> query = dbSet;
+
+        if (filter != null)
+        {
+            query = query.Where(filter);
+        }
+
+        foreach (var includeProperty in includeProperties.Split(
+            new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+        {
+            query = query.Include(includeProperty);
+        }
+
+        if (orderBy != null)
+        {
+            return orderBy(query).ToList();
+        }
+        else
+        {
+            return query.ToList();
+        }
+    }
+}
+```
+
+**Análisis técnico:** Este es uno de los ejemplos más citados en la documentación oficial de .NET porque resuelve un problema muy práctico: **evitar escribir un método nuevo por cada combinación de filtro, orden e includes**. El parámetro `filter` recibe una expresión lambda (`Expression<Func<TEntity, bool>>`) que se aplica como `Where` solo si no es nulo. El parámetro `includeProperties` es un string separado por comas (ej. `"Departamento,Cursos"`) que se traduce dinámicamente en múltiples llamadas a `.Include()`, similar a como se usó `.Include("Genero")` en el Caso de Estudio 1 de este manual, pero generalizado para cualquier cantidad de relaciones.
+
+Comparado con el enfoque manual visto en `GestionUsuariosDatosEF` (donde cada método de lectura escribe su propio `.Where()` e `.Include()` fijos), este patrón permite que la **Capa de Presentación** decida en tiempo de ejecución qué filtrar, cómo ordenar y qué relaciones incluir, sin tener que crear un método nuevo en la Capa de Datos para cada caso.
+
+| Técnica | Visto en este manual (Cap. 4-5) | Visto en Contoso University |
+| :--- | :--- | :--- |
+| Filtro (`Where`) | Condición fija escrita en cada método (ej. `p => p.id == id`) | Recibido como parámetro `Expression<Func<TEntity, bool>>`, reutilizable |
+| Relaciones (`Include`) | Una llamada fija por método (ej. `.Include("Genero")`) | Lista dinámica de relaciones separada por comas |
+| Orden (`OrderBy`) | Escrito directo en la consulta | Recibido como parámetro `Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>` |
+
+---
+
+### 7.3. Conclusión de los Casos Open Source
+
+Ambos proyectos confirman que las técnicas LINQ vistas en este manual (`Where`, `Include`, `OrderBy`, `GroupBy`, ejecución diferida con `IQueryable`) son exactamente las mismas que se usan en software profesional a gran escala. La diferencia principal es el nivel de **generalización**: mientras que en los proyectos del curso cada entidad (Paciente, Producto, Libro) tiene su propia clase de acceso a datos, en proyectos más grandes como `eShopOnWeb` y `Contoso University` se prefiere un **repositorio genérico** (`EfRepository<T>`, `GenericRepository<TEntity>`) para reducir la duplicación de código cuando el sistema crece a decenas de entidades.
+
+---
+
+## 8. Referencias 
 
 * [1] Microsoft, "LINQ to SQL," *Microsoft Learn*. [Online]. Disponible en: [https://learn.microsoft.com/es-es/dotnet/framework/data/adonet/sql/linq/](https://learn.microsoft.com/es-es/dotnet/framework/data/adonet/sql/linq/). [Accedido: 15-jun-2026].
 
@@ -948,3 +1074,7 @@ public static string InsertarConValidacion(LibroEntidad libro)
 * [4] Microsoft, "Chart Control de Windows Forms," *Microsoft Learn*. [Online]. Disponible en: [https://learn.microsoft.com/es-es/dotnet/desktop/winforms/controls/chart-control](https://learn.microsoft.com/es-es/dotnet/desktop/winforms/controls/chart-control). [Accedido: 15-jun-2026].
 
 * [5] Microsoft, "Operaciones de agregación (LINQ en C#)," *Microsoft Learn*. [Online]. Disponible en: [https://learn.microsoft.com/es-es/dotnet/csharp/linq/aggregate-data](https://learn.microsoft.com/es-es/dotnet/csharp/linq/aggregate-data). [Accedido: 15-jun-2026].
+
+* [6] Microsoft, "eShopOnWeb: Sample ASP.NET Core Reference Application," *GitHub*. [Online]. Disponible en: [https://github.com/dotnet-architecture/eShopOnWeb](https://github.com/dotnet-architecture/eShopOnWeb). [Accedido: 16-jun-2026].
+
+* [7] Microsoft, "Implementing the Repository and Unit of Work Patterns in an ASP.NET MVC Application," *Microsoft Learn*. [Online]. Disponible en: [https://learn.microsoft.com/en-us/aspnet/mvc/overview/older-versions/getting-started-with-ef-5-using-mvc-4/implementing-the-repository-and-unit-of-work-patterns-in-an-asp-net-mvc-application](https://learn.microsoft.com/en-us/aspnet/mvc/overview/older-versions/getting-started-with-ef-5-using-mvc-4/implementing-the-repository-and-unit-of-work-patterns-in-an-asp-net-mvc-application). [Accedido: 16-jun-2026].
