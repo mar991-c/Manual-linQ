@@ -958,10 +958,60 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#7-referencias-formato-ieee" class="md-nav__link">
+  <a href="#7-casos-de-estudio-en-proyectos-open-source" class="md-nav__link">
     <span class="md-ellipsis">
       
-        7. Referencias (Formato IEEE)
+        7. Casos de Estudio en Proyectos Open Source
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Casos de Estudio en Proyectos Open Source">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#71-eshoponweb-microsoft-patron-repositorio-generico-con-linq" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.1. eShopOnWeb (Microsoft) — Patrón Repositorio Genérico con LINQ
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#72-contoso-university-microsoft-learn-repositorio-generico-con-filtro-orden-e-include-dinamicos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.2. Contoso University (Microsoft Learn) — Repositorio Genérico con Filtro, Orden e Include Dinámicos
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#73-conclusion-de-los-casos-open-source" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.3. Conclusión de los Casos Open Source
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-referencias" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Referencias
       
     </span>
   </a>
@@ -1535,10 +1585,60 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#7-referencias-formato-ieee" class="md-nav__link">
+  <a href="#7-casos-de-estudio-en-proyectos-open-source" class="md-nav__link">
     <span class="md-ellipsis">
       
-        7. Referencias (Formato IEEE)
+        7. Casos de Estudio en Proyectos Open Source
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Casos de Estudio en Proyectos Open Source">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#71-eshoponweb-microsoft-patron-repositorio-generico-con-linq" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.1. eShopOnWeb (Microsoft) — Patrón Repositorio Genérico con LINQ
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#72-contoso-university-microsoft-learn-repositorio-generico-con-filtro-orden-e-include-dinamicos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.2. Contoso University (Microsoft Learn) — Repositorio Genérico con Filtro, Orden e Include Dinámicos
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#73-conclusion-de-los-casos-open-source" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.3. Conclusión de los Casos Open Source
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-referencias" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Referencias
       
     </span>
   </a>
@@ -2570,7 +2670,153 @@
 </tbody>
 </table>
 <hr />
-<h2 id="7-referencias-formato-ieee">7. Referencias (Formato IEEE)</h2>
+<h2 id="7-casos-de-estudio-en-proyectos-open-source">7. Casos de Estudio en Proyectos Open Source</h2>
+<p>A diferencia de los casos anteriores (proyectos propios del curso), esta sección analiza cómo se usa LINQ en dos proyectos públicos y oficiales de Microsoft, ampliamente reconocidos en la industria. El objetivo es contrastar las técnicas vistas en clase con su aplicación en software de referencia a gran escala.</p>
+<blockquote>
+<p><strong>Nota de uso:</strong> Los fragmentos mostrados son extractos breves con fines exclusivamente educativos. El código completo, con su licencia correspondiente, puede consultarse en los enlaces indicados.</p>
+</blockquote>
+<hr />
+<h3 id="71-eshoponweb-microsoft-patron-repositorio-generico-con-linq">7.1. eShopOnWeb (Microsoft) — Patrón Repositorio Genérico con LINQ</h3>
+<p><strong>Contexto:</strong> <code>eShopOnWeb</code> es una aplicación de referencia oficial de Microsoft que demuestra arquitectura en capas para una tienda en línea, usando ASP.NET Core y Entity Framework Core.</p>
+<blockquote>
+<p><strong>Referencia:</strong> Repositorio <code>dotnet-architecture/eShopOnWeb</code>, archivo <a href="https://github.com/dotnet-architecture/eShopOnWeb/blob/main/src/Infrastructure/Data/EfRepository.cs"><code>src/Infrastructure/Data/EfRepository.cs</code></a>. Licencia MIT.</p>
+</blockquote>
+<p>El repositorio implementa una clase genérica <code>EfRepository&lt;T&gt;</code> que centraliza el acceso a datos para cualquier entidad del dominio, similar al patrón que usaron en <code>Capa.Datos</code> con <code>EstudianteRepository</code> o <code>TransaccionRepository</code>, pero generalizado para reutilizarse con cualquier tabla:</p>
+<div class="highlight"><pre><span></span><code><span class="k">public</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">EfRepository</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">RepositoryBase</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">IReadRepository</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">IRepository</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span>
+<span class="w">    </span><span class="k">where</span><span class="w"> </span><span class="n">T</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">class</span><span class="p">,</span><span class="w"> </span><span class="n">IAggregateRoot</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">protected</span><span class="w"> </span><span class="k">readonly</span><span class="w"> </span><span class="n">CatalogContext</span><span class="w"> </span><span class="n">_dbContext</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="nf">EfRepository</span><span class="p">(</span><span class="n">CatalogContext</span><span class="w"> </span><span class="n">dbContext</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">_dbContext</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dbContext</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="k">virtual</span><span class="w"> </span><span class="k">async</span><span class="w"> </span><span class="n">Task</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">GetByIdAsync</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">CancellationToken</span><span class="w"> </span><span class="n">cancellationToken</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">default</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">var</span><span class="w"> </span><span class="n">keyValues</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="kt">object</span><span class="p">[]</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="p">};</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="n">_dbContext</span><span class="p">.</span><span class="n">Set</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">().</span><span class="n">FindAsync</span><span class="p">(</span><span class="n">keyValues</span><span class="p">,</span><span class="w"> </span><span class="n">cancellationToken</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p><strong>Análisis:</strong> En lugar de escribir un repositorio distinto para cada entidad (<code>ProductoDatos</code>, <code>LibroDatos</code>, <code>PacienteDatos</code>, como en los casos anteriores), <code>eShopOnWeb</code> usa genéricos de C# (<code>&lt;T&gt;</code>) para crear <strong>un solo repositorio que sirve para todas las tablas</strong>, siempre que la entidad implemente la interfaz <code>IAggregateRoot</code>. Esto reduce la duplicación de código, pero requiere un nivel de abstracción más avanzado (genéricos, restricciones de tipo <code>where T : class</code>).</p>
+<p>El proyecto también usa el <strong>Patrón Specification</strong>, donde cada consulta LINQ compleja se encapsula en su propia clase. Por ejemplo, el servicio de catálogo construye los filtros así:</p>
+<blockquote>
+<p><strong>Referencia:</strong> Archivo <a href="https://github.com/dotnet-architecture/eShopOnWeb/blob/main/src/Web/Services/CatalogViewModelService.cs"><code>src/Web/Services/CatalogViewModelService.cs</code></a>.</p>
+</blockquote>
+<div class="highlight"><pre><span></span><code><span class="kt">var</span><span class="w"> </span><span class="n">filterSpecification</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">CatalogFilterSpecification</span><span class="p">(</span><span class="n">brandId</span><span class="p">,</span><span class="w"> </span><span class="n">typeId</span><span class="p">);</span>
+<span class="kt">var</span><span class="w"> </span><span class="n">filterPaginatedSpecification</span><span class="w"> </span><span class="o">=</span>
+<span class="w">    </span><span class="k">new</span><span class="w"> </span><span class="nf">CatalogFilterPaginatedSpecification</span><span class="p">(</span><span class="n">itemsPage</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">pageIndex</span><span class="p">,</span><span class="w"> </span><span class="n">itemsPage</span><span class="p">,</span><span class="w"> </span><span class="n">brandId</span><span class="p">,</span><span class="w"> </span><span class="n">typeId</span><span class="p">);</span>
+
+<span class="kt">var</span><span class="w"> </span><span class="n">itemsOnPage</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="n">_itemRepository</span><span class="p">.</span><span class="n">ListAsync</span><span class="p">(</span><span class="n">filterPaginatedSpecification</span><span class="p">);</span>
+<span class="kt">var</span><span class="w"> </span><span class="n">totalItems</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="n">_itemRepository</span><span class="p">.</span><span class="n">CountAsync</span><span class="p">(</span><span class="n">filterSpecification</span><span class="p">);</span>
+</code></pre></div>
+<p><strong>Análisis:</strong> En lugar de escribir el <code>.Where()</code> y <code>.Skip().Take()</code> directamente en el servicio (como se hizo en el Capítulo 6 con <code>Skip</code>/<code>Take</code>), aquí esos filtros se "empaquetan" dentro de una clase <code>Specification</code>. Esto separa completamente la lógica del filtro de LINQ de la lógica del servicio, facilitando reutilizar el mismo filtro en varios lugares del sistema sin repetir código.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Técnica</th>
+<th style="text-align: left;">Visto en este manual (Cap. 6)</th>
+<th style="text-align: left;">Visto en eShopOnWeb</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Paginación</td>
+<td style="text-align: left;"><code>.Skip()</code> y <code>.Take()</code> escritos directo en el método</td>
+<td style="text-align: left;">Encapsulados en una clase <code>CatalogFilterPaginatedSpecification</code></td>
+</tr>
+<tr>
+<td style="text-align: left;">Repositorio</td>
+<td style="text-align: left;">Una clase por entidad (<code>ProductoDatos</code>, <code>LibroDatos</code>)</td>
+<td style="text-align: left;">Una clase genérica <code>EfRepository&lt;T&gt;</code> para todas las entidades</td>
+</tr>
+<tr>
+<td style="text-align: left;">Filtros</td>
+<td style="text-align: left;"><code>.Where()</code> directo en el método de la capa de Datos</td>
+<td style="text-align: left;">Encapsulados en clases <code>Specification</code> reutilizables</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="72-contoso-university-microsoft-learn-repositorio-generico-con-filtro-orden-e-include-dinamicos">7.2. Contoso University (Microsoft Learn) — Repositorio Genérico con Filtro, Orden e Include Dinámicos</h3>
+<p><strong>Contexto:</strong> <code>Contoso University</code> es el proyecto de ejemplo oficial usado en la documentación de Microsoft Learn para enseñar el patrón Repositorio y Unit of Work en aplicaciones ASP.NET MVC con Entity Framework.</p>
+<blockquote>
+<p><strong>Referencia:</strong> Microsoft Learn, <a href="https://learn.microsoft.com/en-us/aspnet/mvc/overview/older-versions/getting-started-with-ef-5-using-mvc-4/implementing-the-repository-and-unit-of-work-patterns-in-an-asp-net-mvc-application">"Implementing the Repository and Unit of Work Patterns in an ASP.NET MVC Application"</a>, archivo <code>GenericRepository.cs</code>.</p>
+</blockquote>
+<div class="highlight"><pre><span></span><code><span class="k">public</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">GenericRepository</span><span class="o">&lt;</span><span class="n">TEntity</span><span class="o">&gt;</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">TEntity</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="k">class</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">internal</span><span class="w"> </span><span class="n">SchoolContext</span><span class="w"> </span><span class="n">context</span><span class="p">;</span>
+<span class="w">    </span><span class="k">internal</span><span class="w"> </span><span class="n">DbSet</span><span class="o">&lt;</span><span class="n">TEntity</span><span class="o">&gt;</span><span class="w"> </span><span class="n">dbSet</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="nf">GenericRepository</span><span class="p">(</span><span class="n">SchoolContext</span><span class="w"> </span><span class="n">context</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="n">context</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">context</span><span class="p">;</span>
+<span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="n">dbSet</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">context</span><span class="p">.</span><span class="n">Set</span><span class="o">&lt;</span><span class="n">TEntity</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="k">virtual</span><span class="w"> </span><span class="n">IEnumerable</span><span class="o">&lt;</span><span class="n">TEntity</span><span class="o">&gt;</span><span class="w"> </span><span class="n">Get</span><span class="p">(</span>
+<span class="w">        </span><span class="n">Expression</span><span class="o">&lt;</span><span class="n">Func</span><span class="o">&lt;</span><span class="n">TEntity</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">filter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">null</span><span class="p">,</span>
+<span class="w">        </span><span class="n">Func</span><span class="o">&lt;</span><span class="n">IQueryable</span><span class="o">&lt;</span><span class="n">TEntity</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">IOrderedQueryable</span><span class="o">&lt;</span><span class="n">TEntity</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">orderBy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">null</span><span class="p">,</span>
+<span class="w">        </span><span class="kt">string</span><span class="w"> </span><span class="n">includeProperties</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">IQueryable</span><span class="o">&lt;</span><span class="n">TEntity</span><span class="o">&gt;</span><span class="w"> </span><span class="n">query</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dbSet</span><span class="p">;</span>
+
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">filter</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="k">null</span><span class="p">)</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="n">query</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">query</span><span class="p">.</span><span class="n">Where</span><span class="p">(</span><span class="n">filter</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="k">foreach</span><span class="w"> </span><span class="p">(</span><span class="kt">var</span><span class="w"> </span><span class="n">includeProperty</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">includeProperties</span><span class="p">.</span><span class="n">Split</span><span class="p">(</span>
+<span class="w">            </span><span class="k">new</span><span class="w"> </span><span class="kt">char</span><span class="p">[]</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="sc">&#39;,&#39;</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="n">StringSplitOptions</span><span class="p">.</span><span class="n">RemoveEmptyEntries</span><span class="p">))</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="n">query</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">query</span><span class="p">.</span><span class="n">Include</span><span class="p">(</span><span class="n">includeProperty</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">orderBy</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="k">null</span><span class="p">)</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="nf">orderBy</span><span class="p">(</span><span class="n">query</span><span class="p">).</span><span class="n">ToList</span><span class="p">();</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="k">else</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">query</span><span class="p">.</span><span class="n">ToList</span><span class="p">();</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p><strong>Análisis técnico:</strong> Este es uno de los ejemplos más citados en la documentación oficial de .NET porque resuelve un problema muy práctico: <strong>evitar escribir un método nuevo por cada combinación de filtro, orden e includes</strong>. El parámetro <code>filter</code> recibe una expresión lambda (<code>Expression&lt;Func&lt;TEntity, bool&gt;&gt;</code>) que se aplica como <code>Where</code> solo si no es nulo. El parámetro <code>includeProperties</code> es un string separado por comas (ej. <code>"Departamento,Cursos"</code>) que se traduce dinámicamente en múltiples llamadas a <code>.Include()</code>, similar a como se usó <code>.Include("Genero")</code> en el Caso de Estudio 1 de este manual, pero generalizado para cualquier cantidad de relaciones.</p>
+<p>Comparado con el enfoque manual visto en <code>GestionUsuariosDatosEF</code> (donde cada método de lectura escribe su propio <code>.Where()</code> e <code>.Include()</code> fijos), este patrón permite que la <strong>Capa de Presentación</strong> decida en tiempo de ejecución qué filtrar, cómo ordenar y qué relaciones incluir, sin tener que crear un método nuevo en la Capa de Datos para cada caso.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Técnica</th>
+<th style="text-align: left;">Visto en este manual (Cap. 4-5)</th>
+<th style="text-align: left;">Visto en Contoso University</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Filtro (<code>Where</code>)</td>
+<td style="text-align: left;">Condición fija escrita en cada método (ej. <code>p =&gt; p.id == id</code>)</td>
+<td style="text-align: left;">Recibido como parámetro <code>Expression&lt;Func&lt;TEntity, bool&gt;&gt;</code>, reutilizable</td>
+</tr>
+<tr>
+<td style="text-align: left;">Relaciones (<code>Include</code>)</td>
+<td style="text-align: left;">Una llamada fija por método (ej. <code>.Include("Genero")</code>)</td>
+<td style="text-align: left;">Lista dinámica de relaciones separada por comas</td>
+</tr>
+<tr>
+<td style="text-align: left;">Orden (<code>OrderBy</code>)</td>
+<td style="text-align: left;">Escrito directo en la consulta</td>
+<td style="text-align: left;">Recibido como parámetro <code>Func&lt;IQueryable&lt;TEntity&gt;, IOrderedQueryable&lt;TEntity&gt;&gt;</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="73-conclusion-de-los-casos-open-source">7.3. Conclusión de los Casos Open Source</h3>
+<p>Ambos proyectos confirman que las técnicas LINQ vistas en este manual (<code>Where</code>, <code>Include</code>, <code>OrderBy</code>, <code>GroupBy</code>, ejecución diferida con <code>IQueryable</code>) son exactamente las mismas que se usan en software profesional a gran escala. La diferencia principal es el nivel de <strong>generalización</strong>: mientras que en los proyectos del curso cada entidad (Paciente, Producto, Libro) tiene su propia clase de acceso a datos, en proyectos más grandes como <code>eShopOnWeb</code> y <code>Contoso University</code> se prefiere un <strong>repositorio genérico</strong> (<code>EfRepository&lt;T&gt;</code>, <code>GenericRepository&lt;TEntity&gt;</code>) para reducir la duplicación de código cuando el sistema crece a decenas de entidades.</p>
+<hr />
+<h2 id="8-referencias">8. Referencias</h2>
 <ul>
 <li>
 <p>[1] Microsoft, "LINQ to SQL," <em>Microsoft Learn</em>. [Online]. Disponible en: <a href="https://learn.microsoft.com/es-es/dotnet/framework/data/adonet/sql/linq/">https://learn.microsoft.com/es-es/dotnet/framework/data/adonet/sql/linq/</a>. [Accedido: 15-jun-2026].</p>
@@ -2586,6 +2832,12 @@
 </li>
 <li>
 <p>[5] Microsoft, "Operaciones de agregación (LINQ en C#)," <em>Microsoft Learn</em>. [Online]. Disponible en: <a href="https://learn.microsoft.com/es-es/dotnet/csharp/linq/aggregate-data">https://learn.microsoft.com/es-es/dotnet/csharp/linq/aggregate-data</a>. [Accedido: 15-jun-2026].</p>
+</li>
+<li>
+<p>[6] Microsoft, "eShopOnWeb: Sample ASP.NET Core Reference Application," <em>GitHub</em>. [Online]. Disponible en: <a href="https://github.com/dotnet-architecture/eShopOnWeb">https://github.com/dotnet-architecture/eShopOnWeb</a>. [Accedido: 16-jun-2026].</p>
+</li>
+<li>
+<p>[7] Microsoft, "Implementing the Repository and Unit of Work Patterns in an ASP.NET MVC Application," <em>Microsoft Learn</em>. [Online]. Disponible en: <a href="https://learn.microsoft.com/en-us/aspnet/mvc/overview/older-versions/getting-started-with-ef-5-using-mvc-4/implementing-the-repository-and-unit-of-work-patterns-in-an-asp-net-mvc-application">https://learn.microsoft.com/en-us/aspnet/mvc/overview/older-versions/getting-started-with-ef-5-using-mvc-4/implementing-the-repository-and-unit-of-work-patterns-in-an-asp-net-mvc-application</a>. [Accedido: 16-jun-2026].</p>
 </li>
 </ul>
 
