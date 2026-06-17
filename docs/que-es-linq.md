@@ -91,34 +91,24 @@ LINQ to XML, menos frecuente en los proyectos de este manual, se usa para leer o
 
 ```mermaid
 graph TD
-    A[Código fuente C#] -->|Sintaxis unificada LINQ| B[Proveedores de LINQ]
-    
-    B -->|Memoria RAM| C[LINQ to Objects]
-    C -->|Retorna| F[Listas y arrays]
-    
-    B -->|Traducción a SQL| D[LINQ to Entities / EF Core]
-    D -->|Consulta| G[(SQL Server / PostgreSQL)]
-    
-    B -->|Estructuras de texto| E[LINQ to XML]
-    E -->|Mapea| H[Archivos de configuración]
+    A[Código fuente C#] -->|Sintaxis unificada LINQ| B(Proveedores de LINQ)
+    B -->|Memoria RAM| C(LINQ to Objects)
+    B -->|Traducción a SQL| D(LINQ to Entities / EF Core)
+    B -->|Estructuras de texto| E(LINQ to XML)
+    C --> F[Listas y arrays]
+    D --> G[(SQL Server / PostgreSQL)]
+    E --> H[Archivos de configuración]
 
-    %% Definir una clase para texto negro legible
-    classDef darkText color:#000000;
-    
-    %% Aplicar la clase de texto negro a todos los nodos
-    class A,B,C,D,E,F,G,H darkText;
+    style A fill:#e1f5fe,stroke:#0288d1,stroke-width:2px,color:#000000
+    style B fill:#fff3e0,stroke:#f57c00,stroke-width:2px,color:#000000
+    style C fill:#e8f5e9,stroke:#388e3c,stroke-width:2px,color:#000000
+    style D fill:#e8f5e9,stroke:#388e3c,stroke-width:2px,color:#000000
+    style E fill:#e8f5e9,stroke:#388e3c,stroke-width:2px,color:#000000
+    style F fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px,color:#000000
+    style G fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px,color:#000000
+    style H fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px,color:#000000
 
-    %% Estilos de fondo y borde (se mantienen iguales)
-    style A fill:#e3f2fd,stroke:#1565c0,stroke-width:2px
-    style B fill:#fff3e0,stroke:#f57c00,stroke-width:2px
-    
-    style C fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px
-    style D fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px
-    style E fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px
-    
-    style F fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
-    style G fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
-    style H fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
+    linkStyle default color:#9ca3af
 ```
 
 ## 7. Referencias
