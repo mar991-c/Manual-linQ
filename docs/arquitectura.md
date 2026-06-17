@@ -83,7 +83,7 @@ graph TD
 
 ---
 
-## 5. Referencias
+## 5. Referencias 
 
 * [1] Microsoft, "Estilo de arquitectura de n niveles," *Azure Architecture Center*. [Online]. Disponible en: [https://learn.microsoft.com/es-es/azure/architecture/guide/architecture-styles/n-tier](https://learn.microsoft.com/es-es/azure/architecture/guide/architecture-styles/n-tier). [Accedido: 15-jun-2026].
 

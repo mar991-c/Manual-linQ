@@ -33,3 +33,9 @@ Estas fuentes se listan al final de cada capítulo correspondiente utilizando el
 **Ejemplo de aplicación:**
 
 * [1] Microsoft, "LINQ to SQL," *Microsoft Learn*. [Online]. Disponible en: [https://learn.microsoft.com/es-es/dotnet/framework/data/adonet/sql/linq/](https://learn.microsoft.com/es-es/dotnet/framework/data/adonet/sql/linq/). [Accedido: 15-jun-2026].
+
+## 3. Código Fuente Completo
+
+El código completo de los proyectos documentados en este manual está disponible en la carpeta `src/` de este mismo repositorio:
+
+[**Ver código fuente completo en GitHub**](https://github.com/mar991-c/Manual-linQ/tree/main/src)
